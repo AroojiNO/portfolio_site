@@ -4,9 +4,10 @@
 /* 2. CSS‑first theme configuration */
 @theme {
   /* Color tokens → generate bg-dark, text-primary, border-accent, etc. */
-  --color-dark: #06070A;
+  --color-dark: #10121A;
   --color-primary: #7231FF;
   --color-accent: #FFC01D;
+  --color-soft-orange: #F48C06;
 
   /* Font tokens → generate font-sans, font-mono */
   --font-sans: var(--font-geist-sans), sans-serif;

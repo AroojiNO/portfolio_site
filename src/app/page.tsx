@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, useEffect } from "react";
+import gsap from "gsap";
 
 export default function HomePage() {
   const [preview, setPreview] = useState<string | null>(null);
@@ -18,16 +19,29 @@ export default function HomePage() {
     { title: "Project Three", description: "Short description here.", href: "#" },
   ];
 
+  useEffect(() => {
+    gsap.to(document.documentElement, {
+      duration: 12,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+      "--color-primary": "#5A1ED5",
+      "--color-accent": "#E6A817",
+    });
+  }, []);
+
   return (
-    <main className="relative min-h-screen bg-dark text-white font-sans">
+    <main className="relative min-h-screen bg-dark/30 text-white font-sans">
       {/* subtle blurred gradient overlay */}
       <div
         className="
           absolute inset-0
           bg-gradient-to-br
-            from-primary/10 via-dark/40 to-accent/10
+          from-primary/10 via-dark/30 to-accent/10
           pointer-events-none
-          blur-lg
+          blur-3xl
+          opacity-50
+          transition-all duration-1000
         "
         aria-hidden="true"
       />
@@ -42,15 +56,15 @@ export default function HomePage() {
         </section>
 
         {/* About Me */}
-        <section className="glass">
-          <h2 className="text-2xl font-semibold mb-3 text-primary">About Me</h2>
+        <section className="glass border-soft-orange">
+          <h2 className="text-2xl font-semibold mb-3 text-accent">About Me</h2>
           <p className="text-gray-200">
             I’m currently a CS & Applied Statistics student at UVA, working on full‑stack web apps and ML projects.
           </p>
         </section>
 
         {/* Image Uploader */}
-        <section className="glass">
+        <section className="glass border-soft-orange">
           <h2 className="text-2xl font-semibold mb-3 text-accent">Upload a Photo</h2>
           <input
             type="file"
@@ -62,14 +76,14 @@ export default function HomePage() {
             <img
               src={preview}
               alt="Preview"
-              className="w-40 h-40 object-cover rounded-full border-2 border-primary"
+              className="w-40 h-40 object-cover rounded-full border-2 border-soft-orange"
             />
           )}
         </section>
 
         {/* Projects */}
         <section>
-          <h2 className="text-2xl font-semibold mb-6 text-primary">Projects</h2>
+          <h2 className="text-2xl font-semibold mb-6 text-accent">Projects</h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {projects.map((p) => (
               <a
