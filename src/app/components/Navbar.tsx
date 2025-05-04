@@ -13,7 +13,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="absolute top-4 left-1/2 transform -translate-x-1/2 glass backdrop-blur-xs shadow-glass z-20 px-6 py-3">
+    <nav className="fixed top-4 left-1/2 transform -translate-x-1/2 glass backdrop-blur-xs shadow-glass z-20 px-6 py-3">
       <ul className="flex space-x-8">
         {links.map(({ href, label }) => {
           const isActive = pathname === href;

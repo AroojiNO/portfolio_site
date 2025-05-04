@@ -37,11 +37,10 @@ export default function HomePage() {
         className="
           absolute inset-0
           bg-gradient-to-br
-          from-primary/10 via-dark/30 to-accent/10
-          pointer-events-none
+          from-primary/10 via-dark/30 to-accent/20
+          pointer-events-none 
           blur-3xl
-          opacity-50
-          transition-all duration-1000
+          opacity-70
         "
         aria-hidden="true"
       />
