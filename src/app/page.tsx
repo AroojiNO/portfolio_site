@@ -19,31 +19,24 @@ export default function HomePage() {
     { title: "Project Three", description: "Short description here.", href: "#" },
   ];
 
-  useEffect(() => {
-    gsap.to(document.documentElement, {
-      duration: 12,
-      repeat: -1,
-      yoyo: true,
-      ease: "sine.inOut",
-      "--color-primary": "#5A1ED5",
-      "--color-accent": "#E6A817",
-    });
-  }, []);
+
 
   return (
     <main className="relative min-h-screen bg-dark/30 text-white font-sans">
-      {/* subtle blurred gradient overlay */}
-      <div
-        className="
-          absolute inset-0
-          bg-gradient-to-br
-          from-primary/10 via-dark/30 to-accent/20
-          pointer-events-none 
-          blur-3xl
-          opacity-70
-        "
-        aria-hidden="true"
-      />
+      {/* oil-spill background */}
+      {/* animated oil-spill bg */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div
+          aria-hidden="true"
+          className="
+            w-full h-full
+            opacity-30 blur-lg
+            bg-center bg-cover
+            animate-oilMove
+          "
+          style={{ backgroundImage: "url('/oil-spill.png')" }}
+        />
+      </div>
 
       <div className="relative z-10 max-w-4xl mx-auto px-8 py-12 space-y-16">
         {/* Welcome */}

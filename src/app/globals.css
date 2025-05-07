@@ -39,3 +39,17 @@ body {
   padding: 1.5rem;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
+
+@keyframes oilMove {
+  0%, 100% {
+    transform: translate(0,0) scale(1.06) rotate(0deg);
+    filter: hue-rotate(0deg) brightness(1.02);
+  }
+  50% {
+    transform: translate(-3%, -2%) scale(1.08) rotate(1deg);
+    filter: hue-rotate(00deg) brightness(1.05);
+  }
+}
+.animate-oilMove {
+  animation: oilMove 20s ease-in-out infinite alternate;
+}
