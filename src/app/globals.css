@@ -46,10 +46,19 @@ body {
     filter: hue-rotate(0deg) brightness(1.02);
   }
   50% {
-    transform: translate(-3%, -2%) scale(1.08) rotate(1deg);
-    filter: hue-rotate(00deg) brightness(1.05);
+    transform: translate(-5%, -5%) scale(1.08) rotate(1deg);
+    filter: hue-rotate(10deg) brightness(1.05);
   }
+  
+}
+@keyframes oilPan {
+  0%   { background-position:   0%   0%; }
+  50%  { background-position:  20%  25%; }
+  100% { background-position:   0%   0%; }
 }
 .animate-oilMove {
-  animation: oilMove 20s ease-in-out infinite alternate;
+  /* oilMove for subtle hue/scale, oilPan for drifting lines */
+  animation:
+    oilMove 20s ease-in-out infinite alternate,
+    oilPan 60s linear         infinite;
 }

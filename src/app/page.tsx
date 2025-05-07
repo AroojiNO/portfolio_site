@@ -22,7 +22,7 @@ export default function HomePage() {
 
 
   return (
-    <main className="relative min-h-screen bg-dark/30 text-white font-sans">
+    <main className="relative min-h-screen bg-dark text-white font-sans">
       {/* oil-spill background */}
       {/* animated oil-spill bg */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -31,7 +31,8 @@ export default function HomePage() {
           className="
             w-full h-full
             opacity-30 blur-lg
-            bg-center bg-cover
+            bg-center bg-repeat
+            bg-[length:200%_200%]
             animate-oilMove
           "
           style={{ backgroundImage: "url('/oil-spill.png')" }}
