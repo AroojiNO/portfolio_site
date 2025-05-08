@@ -2,6 +2,8 @@
 
 import { useState, ChangeEvent, useEffect } from "react";
 import gsap from "gsap";
+import OilCutoutMask from "./components/OilCutoutMask";
+import PsychedelicColorBackground from "./components/PsychedelicColorBackground";
 
 export default function HomePage() {
   const [preview, setPreview] = useState<string | null>(null);
@@ -23,22 +25,11 @@ export default function HomePage() {
 
   return (
     <main className="relative min-h-screen bg-dark text-white font-sans">
-      {/* oil-spill background */}
-      {/* animated oil-spill bg */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div
-          aria-hidden="true"
-          className="
-            w-full h-full
-            opacity-30 blur-lg
-            bg-center bg-repeat
-            bg-[length:200%_200%]
-            animate-oilMove
-          "
-          style={{ backgroundImage: "url('/oil-spill.png')" }}
-        />
-      </div>
-
+      {/* Background Blob */}
+      <PsychedelicColorBackground />
+      {/* Oil Cutout Mask */}
+      <OilCutoutMask />
+      {/* Glassmorphic Effect */}
       <div className="relative z-10 max-w-4xl mx-auto px-8 py-12 space-y-16">
         {/* Welcome */}
         <section>
