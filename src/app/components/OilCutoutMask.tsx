@@ -1,17 +1,21 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+const OIL_MASK_SRC = '/oil-spill.png'
 
 export default function OilCutoutMask() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const maskImgRef = useRef<HTMLImageElement | null>(null)
 
   useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
+    const canvas = canvasRef.current!
+    const ctx = canvas.getContext('2d')!
 
-    let animationFrameId: number
+    // load the mask image
+    const maskImg = new Image()
+    maskImg.src = OIL_MASK_SRC
+    maskImg.crossOrigin = 'anonymous'
+    maskImg.onload = () => { maskImgRef.current = maskImg }
 
     const resize = () => {
       canvas.width = window.innerWidth
@@ -20,61 +24,78 @@ export default function OilCutoutMask() {
     window.addEventListener('resize', resize)
     resize()
 
-    const lineConfigs = Array.from({ length: 12 }, (_, i) => ({
-      speed: 0.02 + Math.random() * 0.015,
-      phaseOffset: Math.random() * 2000,
-      amplitude: 40 + Math.random() * 60,
-      frequency: 0.0015 + Math.random() * 0.001,
-      verticalOffset: Math.random() * 60
+    // per‐stripe config
+    const lineConfigs = Array.from({ length: 20 }, () => ({
+      speed:     0.0002 + Math.random()*0.0002,
+      phase:     Math.random()*Math.PI*2,
+      vOff:      30 + Math.random()*50,
+      angle:     (Math.random()*60-30)*(Math.PI/180),
+      lengthFac: 0.5 + Math.random()*1.5,
+      freq:      0.005 + Math.random()*0.05,
+      amp:       0.3 + Math.random()*0.7,
     }))
 
-    function draw(t: number) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
+    let frame = 0
+    function draw() {
+      const w = canvas.width, h = canvas.height
 
-      // Full black background
+      // 1) paint solid black
+      ctx.globalCompositeOperation = 'source-over'
       ctx.fillStyle = 'black'
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      ctx.fillRect(0, 0, w, h)
 
+      // 2) erase stripes
       ctx.globalCompositeOperation = 'destination-out'
-      ctx.lineCap = 'round'
+      lineConfigs.forEach((cfg, i) => {
+        const { speed, phase, vOff, angle, lengthFac, freq, amp } = cfg
+        const thickness = 2 + Math.sin(frame*0.0005 + phase)*3
+        const baseY     = (h/lineConfigs.length)*i
+        const yCenter   = baseY + Math.sin(frame*speed + phase)*vOff
+        const L         = w*lengthFac + thickness*8
+        const startX    = -thickness*4
 
-      for (let i = 0; i < lineConfigs.length; i++) {
-        const { speed, phaseOffset, amplitude, frequency, verticalOffset } = lineConfigs[i]
-        const baseY = (canvas.height / (lineConfigs.length + 2)) * (i + 1)
-        const y = baseY + Math.sin(t * 0.002 + phaseOffset) * verticalOffset
+        ctx.save()
+        ctx.translate(w/2, h/2)
+        ctx.rotate(angle)
+        ctx.translate(-w/2, -h/2)
 
         ctx.beginPath()
-        let first = true
+        ctx.lineWidth   = thickness
+        ctx.lineJoin    = 'round'
+        ctx.lineCap     = 'round'
+        ctx.strokeStyle = 'rgba(0,0,0,1)'
 
-        for (let x = 0; x <= canvas.width; x += 30) {
-          const dx = Math.sin((x + t * speed + phaseOffset) * frequency) * amplitude
-          const nextX = x + 30
-          const nextDx = Math.sin((nextX + t * speed + phaseOffset) * frequency) * amplitude
-          const cpX = x + 15
-          const cpY = y + dx
-
-          if (first) {
-            ctx.moveTo(x, y + dx)
-            first = false
-          } else {
-            ctx.quadraticCurveTo(cpX, cpY, nextX, y + nextDx)
-          }
+        const segs = 150
+        for (let j=0; j<=segs; j++) {
+          const x = startX + (L*j/segs)
+          const y = yCenter + Math.sin(x*freq + frame*speed + phase)*vOff*amp
+          j===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y)
         }
-
-        ctx.strokeStyle = 'rgba(0, 0, 0, 1)'
-        ctx.lineWidth = 12 + Math.sin(t * 0.005 + i) * 4
         ctx.stroke()
+        ctx.restore()
+      })
+
+      // 3) now only keep that result where the oil‐spill shape is opaque
+      const img = maskImgRef.current
+      if (img) {
+        // fit the image to cover
+        const scale = Math.max(w/img.width, h/img.height)
+        const iw = img.width * scale
+        const ih = img.height * scale
+        const dx = (w - iw)/2
+        const dy = (h - ih)/2
+
+        ctx.globalCompositeOperation = 'destination-in'
+        ctx.drawImage(img, dx, dy, iw, ih)
       }
 
-      ctx.globalCompositeOperation = 'source-over'
-      animationFrameId = requestAnimationFrame(draw)
+      frame++
+      requestAnimationFrame(draw)
     }
 
-    animationFrameId = requestAnimationFrame(draw)
-
+    draw()
     return () => {
       window.removeEventListener('resize', resize)
-      cancelAnimationFrame(animationFrameId)
     }
   }, [])
 

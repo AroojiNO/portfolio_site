@@ -26,19 +26,26 @@ export default function PsychedelicColorBackground() {
 
       ctx.clearRect(0, 0, w, h);
 
-      // Full left-to-right sweeping gradient with sine wave offset
-      const offset = Math.sin(t * 0.0005) * (w / 2);
+      // speed up sliding gradient
+      const speed = 3;              // ↑ increase to taste
+
+      const totalSpan = w * 2;
+      const offset = (t * speed) % totalSpan;
+      const windowW = w;            // window always width = canvas width
+      const x0 = -windowW + offset;
+      const x1 = x0 + windowW;
 
       const gradient = ctx.createLinearGradient(
-        w / 2 + offset, 0,
-        w / 2 - offset, h
+        x0, 0,
+        x1, 0
       );
 
-      gradient.addColorStop(0, '#ffba08');     // golden yellow (leading)
-      gradient.addColorStop(0.4, '#e85d04');   // vibrant orange
-      gradient.addColorStop(0.7, '#6a040f');   // deep red
-      gradient.addColorStop(0.85, '#723180');  // bright purple
-      gradient.addColorStop(1, '#370617');     // purple-black (trailing)
+      // reposition purple into the center of the color stops
+      gradient.addColorStop(0,   '#ffba08');
+      gradient.addColorStop(0.25,'#e85d04');
+      gradient.addColorStop(0.5, '#723180');  // purple
+      gradient.addColorStop(0.75,'#6a040f');
+      gradient.addColorStop(1,   '#370617');
 
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, w, h);
