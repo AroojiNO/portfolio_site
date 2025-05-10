@@ -1,8 +1,6 @@
 "use client";
 
 import { useState, ChangeEvent, useEffect } from "react";
-import OilCutoutMask from "./components/OilCutoutMask";
-import PsychedelicColorBackground from "./components/PsychedelicColorBackground";
 import Threads from "./components/Threads";
 
 export default function HomePage() {
@@ -25,18 +23,16 @@ export default function HomePage() {
 
   return (
     <main className="relative min-h-screen bg-dark text-white font-sans">
-
-      {/* Threads Effect */}
-      <div className="fixed inset-0 z-2 min-h-screen" style={{width: '100%'}}>
-        <Threads 
-        amplitude={1.75} 
-        distance={0.2} 
-        enableMouseInteraction={false} 
-        color={[0.4470588235294118, 0.19215686274509805, 1]} />
-      </div>
-
       {/* Glassmorphic Effect */}
       <div className="relative z-10 max-w-4xl mx-auto px-8 py-12 space-y-16">
+        <div style={{ width: "100%", height: "100%", position: "fixed", left:0 }}>
+          <Threads
+            amplitude={1.75}
+            distance={0.2}
+            enableMouseInteraction={false}
+            color={[0.447, 0.192, 1]}
+          />
+        </div>
         {/* Welcome */}
         <section>
           <h1 className="text-5xl font-bold mb-4">Welcome!</h1>
