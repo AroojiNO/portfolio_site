@@ -27,10 +27,10 @@ export default function HomePage() {
     <main className="relative min-h-screen bg-dark text-white font-sans">
 
       {/* Threads Effect */}
-      <div className="fixed inset-0 z-0 min-h-screen" style={{width: '100%'}}>
+      <div className="fixed inset-0 z-2 min-h-screen" style={{width: '100%'}}>
         <Threads 
-        amplitude={2.5} 
-        distance={0.8} 
+        amplitude={1.75} 
+        distance={0.2} 
         enableMouseInteraction={false} 
         color={[0.4470588235294118, 0.19215686274509805, 1]} />
       </div>
