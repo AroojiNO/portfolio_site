@@ -27,7 +27,7 @@ export default function PsychedelicColorBackground() {
       ctx.clearRect(0, 0, w, h);
 
       // speed up sliding gradient
-      const speed = 3;              // ↑ increase to taste
+      const speed = 2;              // ↑ increase to taste
 
       const totalSpan = w * 2;
       const offset = (t * speed) % totalSpan;
@@ -41,11 +41,11 @@ export default function PsychedelicColorBackground() {
       );
 
       // reposition purple into the center of the color stops
-      gradient.addColorStop(0,   '#ffba08');
+      gradient.addColorStop(1,   '#000000');
       gradient.addColorStop(0.25,'#e85d04');
       gradient.addColorStop(0.5, '#723180');  // purple
       gradient.addColorStop(0.75,'#6a040f');
-      gradient.addColorStop(1,   '#370617');
+      gradient.addColorStop(0,   '#000000');
 
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, w, h);
