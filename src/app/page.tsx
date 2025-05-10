@@ -2,6 +2,7 @@
 
 import { useState, ChangeEvent, useEffect } from "react";
 import Threads from "./components/Threads";
+import TopographyHero from "./components/TopographyHero";
 
 export default function HomePage() {
   const [preview, setPreview] = useState<string | null>(null);
@@ -19,13 +20,13 @@ export default function HomePage() {
     { title: "Project Three", description: "Short description here.", href: "#" },
   ];
 
-
-
   return (
     <main className="relative min-h-screen bg-dark text-white font-sans">
+      {/* Hero Component */}
+      <TopographyHero />
       {/* Glassmorphic Effect */}
       <div className="relative z-10 max-w-4xl mx-auto px-8 py-12 space-y-16">
-        <div style={{ width: "100%", height: "100%", position: "fixed", left:0 }}>
+        <div style={{ width: "150%", height: "100%", position: "absolute", left:0, zIndex: -1 }}> 
           <Threads
             amplitude={1.75}
             distance={0.2}
