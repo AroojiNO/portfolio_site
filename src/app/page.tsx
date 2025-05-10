@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, ChangeEvent, useEffect } from "react";
-import gsap from "gsap";
 import OilCutoutMask from "./components/OilCutoutMask";
 import PsychedelicColorBackground from "./components/PsychedelicColorBackground";
+import Threads from "./components/Threads";
 
 export default function HomePage() {
   const [preview, setPreview] = useState<string | null>(null);
@@ -25,17 +25,24 @@ export default function HomePage() {
 
   return (
     <main className="relative min-h-screen bg-dark text-white font-sans">
-      {/* Background Blob */}
-      <PsychedelicColorBackground />
-      {/* Oil Cutout Mask */}
-      <OilCutoutMask />
+
+      {/* Threads Effect */}
+      <div className="fixed inset-0 z-0 min-h-screen" style={{width: '100%'}}>
+        <Threads 
+        amplitude={2.5} 
+        distance={0.8} 
+        enableMouseInteraction={false} 
+        color={[0.4470588235294118, 0.19215686274509805, 1]} />
+      </div>
+
       {/* Glassmorphic Effect */}
       <div className="relative z-10 max-w-4xl mx-auto px-8 py-12 space-y-16">
         {/* Welcome */}
         <section>
           <h1 className="text-5xl font-bold mb-4">Welcome!</h1>
           <p className="text-lg text-gray-300">
-            I’m Noah—a software engineer and researcher passionate about clean design and performant code.
+            I’m Noah—a software engineer and researcher passionate about clean
+            design and performant code.
           </p>
         </section>
 
@@ -43,13 +50,16 @@ export default function HomePage() {
         <section className="glass border-soft-orange">
           <h2 className="text-2xl font-semibold mb-3 text-accent">About Me</h2>
           <p className="text-gray-200">
-            I’m currently a CS & Applied Statistics student at UVA, working on full‑stack web apps and ML projects.
+            I’m currently a CS & Applied Statistics student at UVA, working on
+            full‑stack web apps and ML projects.
           </p>
         </section>
 
         {/* Image Uploader */}
         <section className="glass border-soft-orange">
-          <h2 className="text-2xl font-semibold mb-3 text-accent">Upload a Photo</h2>
+          <h2 className="text-2xl font-semibold mb-3 text-accent">
+            Upload a Photo
+          </h2>
           <input
             type="file"
             accept="image/*"
