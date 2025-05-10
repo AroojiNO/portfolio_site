@@ -22,7 +22,10 @@ export default function Navbar() {
               <Link
                 href={href}
                 className={`
-                  text-white font-medium transition
+                  text-white font-medium transition text-md text-center text-primary
+                  ${isActive ? "font-bold" : "hover:font-semibold"}
+                  ${isActive ? "border-b-2 border-accent" : "hover:border-b-2"}
+                  ${isActive ? "border-accent" : "hover:border-accent/80"}
                   ${isActive ? "text-accent" : "hover:text-accent/80"}
                 `}
               >
