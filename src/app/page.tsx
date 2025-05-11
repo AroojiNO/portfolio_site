@@ -29,18 +29,18 @@ export default function HomePage() {
           enableMouseInteraction= {true}/>
         <div className="relative z-10 flex flex-col items-center justify-center min-h-screen text-center text-white p-4 pointer-events-none">
           <div className="pointer-events-auto "> {/* Enable pointer events for this content block */}
-            <h1 className="text-5xl md:text-6xl font-bold">Noah Arooji</h1>
-            <p className="mt-4 text-lg md:text-xl max-w-md md:max-w-lg">
+            <h1 className=" text-5xl md:text-6xl font-bold">Noah Arooji</h1>
+            <p className="mt-6 text-lg text-white md:text-xl max-w-md md:max-w-lg">
               CS + STAT Portfolio
             </p>
-            <button className="mt-8 px-8 py-3 border border-yellow-400 text-yellow-300 rounded-full hover:bg-yellow-400 hover:text-black transition-colors duration-300 text-lg">
+            <button className="mt-4 px-5 py-2 border border-yellow-400 text-yellow-300 rounded-full hover:bg-yellow-400 hover:text-black transition-colors duration-300 text-lg">
               View Resume
             </button>
          </div>
        </div>
       </section>
       {/* Glassmorphic Effect */}
-      <div className="relative z-10 max-w-4xl mx-auto px-8 py-12 space-y-16">
+      <div className="min-h-screen relative z-10 max-w-4xl mx-auto px-8 py-12 space-y-16 ">
         <div style={{ width: "150%", height: "100%", position: "absolute", left:-250,  zIndex: -1 }}> 
           <Threads
             amplitude={1.75}
@@ -50,7 +50,7 @@ export default function HomePage() {
           />
         </div>
         {/* Welcome */}
-        <section>
+        <section className="">
           <h1 className="text-5xl font-bold mb-4">Welcome!</h1>
           <p className="text-lg text-gray-300">
             I’m Noah—a software engineer and researcher passionate about clean

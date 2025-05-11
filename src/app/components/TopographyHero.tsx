@@ -75,14 +75,14 @@ void main() {
   float baseRadius = 0.450; // Base size of the blob (adjust for desired screen coverage)
 
   // Lobe Distortion (creates undulating edges)
-  float lobeFrequency = 10.0; // Number of lobes
-  float lobeAmplitude = 0.008;
+  float lobeFrequency = 100.0; // Number of lobes
+  float lobeAmplitude = 0.00000008;
   float lobeTimePhase = iTime * 0.4;
   float lobeDistortion = lobeAmplitude * sin(angle * lobeFrequency + lobeTimePhase);
 
   // Perlin Noise Distortion (organic irregularities)
-  float noiseFrequency = 5.2;
-  float noiseAmplitude = 0.625;
+  float noiseFrequency = 4.2;
+  float noiseAmplitude = 0.525;
   float noiseTimePhase = iTime * 0.05;
   // Sample noise based on angle and a time-varied component for waviness
   vec2 noiseSamplePoint = uv * noiseFrequency; // using angle gives more consistent distortion around circle
@@ -100,7 +100,7 @@ void main() {
   float contourValue = dist - distortedRadius;
 
   // Animate the contour lines by shifting their phase with time
-  float linePhase = iTime * 0.7; // Controls speed of lines moving along the shape
+  float linePhase = iTime * 0.4; // Controls speed of lines moving along the shape
   float lineDensityFactor = 30.0; // Increase for more lines given a uSpacing value
 
   float ringVal = mod(contourValue * lineDensityFactor + linePhase, uSpacing);
@@ -115,8 +115,8 @@ void main() {
   // These radii are in the same 'uv' space as 'dist' and 'baseRadius'.
   // Lines will be fully faded if dist < centralFadeEndRadius.
   // Lines will be fully visible if dist > centralFadeStartRadius.
-  float centralFadeEndRadius = 0.01;  // Lines fully gone inside this radius from center
-  float centralFadeStartRadius = 0.05; // Lines start appearing and become fully visible by this radius
+  float centralFadeEndRadius = 0.02;  // Lines fully gone inside this radius from center
+  float centralFadeStartRadius = 0.3; // Lines start appearing and become fully visible by this radius
 
   float centerFadeFactor = smoothstep(centralFadeEndRadius, centralFadeStartRadius, dist);
 
@@ -142,8 +142,8 @@ void main() {
 
   // Subtle overall glow for the blob body, concentrated near the edges
   // This glow should be softer and more spread out than the lines.
-  float glowFalloff = 0.45; // How far the glow extends from the edge
-  float glowIntensity = 0.25;
+  float glowFalloff = 0.85; // How far the glow extends from the edge
+  float glowIntensity = 0.20;
   // Glow emanates from slightly inside the distortedRadius outwards
   float glowShape = smoothstep(distortedRadius + glowFalloff, distortedRadius - glowFalloff * 0.5, dist);
   color += mix(lineColor1, lineColor2, 0.6) * glowShape * glowIntensity * blobMask;
