@@ -23,13 +23,28 @@ export default function HomePage() {
   return (
     <main className="relative min-h-screen bg-dark text-white font-sans">
       {/* Hero Component */}
-      <TopographyHero />
+      <section className="bg-dark relative h-screen flex flex-col items-center overflow-hidden inset-0 z-0 ">
+       <TopographyHero 
+          spacing={1.25}
+          enableMouseInteraction= {true}/>
+        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen text-center text-white p-4 pointer-events-none">
+          <div className="pointer-events-auto "> {/* Enable pointer events for this content block */}
+            <h1 className="text-5xl md:text-6xl font-bold">Noah Arooji</h1>
+            <p className="mt-4 text-lg md:text-xl max-w-md md:max-w-lg">
+              CS + STAT Portfolio
+            </p>
+            <button className="mt-8 px-8 py-3 border border-yellow-400 text-yellow-300 rounded-full hover:bg-yellow-400 hover:text-black transition-colors duration-300 text-lg">
+              View Resume
+            </button>
+         </div>
+       </div>
+      </section>
       {/* Glassmorphic Effect */}
       <div className="relative z-10 max-w-4xl mx-auto px-8 py-12 space-y-16">
-        <div style={{ width: "150%", height: "100%", position: "absolute", left:0, zIndex: -1 }}> 
+        <div style={{ width: "150%", height: "100%", position: "absolute", left:-250,  zIndex: -1 }}> 
           <Threads
             amplitude={1.75}
-            distance={0.2}
+            distance={0.55}
             enableMouseInteraction={false}
             color={[0.447, 0.192, 1]}
           />
@@ -52,7 +67,7 @@ export default function HomePage() {
           </p>
         </section>
 
-        {/* Image Uploader */}
+        {/* Technologies / Skills */}
         <section className="glass border-soft-orange">
           <h2 className="text-2xl font-semibold mb-3 text-accent">
             Upload a Photo
