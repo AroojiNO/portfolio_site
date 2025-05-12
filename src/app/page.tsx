@@ -175,7 +175,7 @@ export default function HomePage() {
           <h2 
             className="text-2xl font-semibold mb-4 text-accent">About Me</h2>
           <p className="text-gray-200">
-            I’m currently a CS & Applied Statistics student at UVA, working on
+            I’m currently a Computer Science & Applied Statistics student at UVA, working on
             full‑stack web apps and Machine Learning projects.
           </p>
         </section>

@@ -8,7 +8,6 @@
   --color-primary: #7231FF;
   --color-accent: #FFDF80;
   --color-soft-orange: #F48C06;
-  --color-gold: #9c7509b7;
 
   /* Font tokens → generate font-sans, font-mono */
   --font-sans: var(--font-geist-sans), sans-serif;
