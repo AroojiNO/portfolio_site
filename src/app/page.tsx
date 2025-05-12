@@ -147,8 +147,7 @@ export default function HomePage() {
        </div>
       </section>
       {/* Glassmorphic Effect */}
-      <div className="min-h-screen relative z-10 max-w-4xl mx-auto px-8 py-16 space-y-8 ">
-        <div style={{ width: "150%", height: "60%", position: "absolute", left:-250,  zIndex: -1, bottom:0 }}> 
+      <div className="" style={{ width: "100%", height: "60%", position: "absolute", bottom:0}}> 
           <Threads
             amplitude={3.25}
             distance={0.45}
@@ -156,6 +155,7 @@ export default function HomePage() {
             color={[0.447, 0.192, 1]}
           />
         </div>
+      <div className="min-h-screen relative z-10 max-w-4xl mx-auto px-8 py-16 space-y-8 ">
         {/* Welcome */}
         <section ref={welcomeSectionRef} className="py-10 ">
           <h1 className="text-5xl font-bold mb-4">Welcome!</h1>
@@ -183,7 +183,7 @@ export default function HomePage() {
         {/* Technologies / Skills */}
         <section className="glass ">
           <h2 className="text-2xl font-semibold mb-4 text-accent"> {/* Increased mb slightly for better spacing */}
-            Technologies & Languages
+            Languages & Technologies 
           </h2>
           <div className="flex flex-wrap gap-8 justify-center"> {/* Flex container for images */}
             {/* Replace these placeholders with your actual technology images.
