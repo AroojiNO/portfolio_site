@@ -10,6 +10,7 @@ import { useGSAP } from "@gsap/react";
 import Threads from "./components/Threads";
 import TopographyHero from "./components/TopographyHero";
 import SkillBar from "./components/SkillBar";
+import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
@@ -140,14 +141,16 @@ export default function HomePage() {
             <p className="mt-6 text-lg text-white md:text-xl max-w-md md:max-w-lg">
               CS + STAT Portfolio
             </p>
-            <button className="mt-4 px-5 py-2 border border-yellow-400 text-yellow-300 rounded-full hover:bg-yellow-400 hover:text-black transition-colors duration-300 text-lg">
+            <Link href="/resume" passHref>
+              <button className="mt-4 px-5 py-2 border border-yellow-400 text-yellow-300 rounded-full hover:bg-yellow-400 hover:text-black transition-colors duration-300 text-lg">
               View Resume
             </button>
-         </div>
-       </div>
-      </section>
+          </Link>
+        </div>
+      </div>
+    </section>
       {/* Glassmorphic Effect */}
-      <div className="" style={{ width: "100%", height: "60%", position: "absolute", bottom:0}}> 
+      <div className="" style={{ width: "100%", height: "60%", position: "absolute",  zIndex: 0, bottom:0}}> 
           <Threads
             amplitude={3.25}
             distance={0.45}
