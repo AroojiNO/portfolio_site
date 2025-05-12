@@ -6,8 +6,9 @@
   /* Color tokens → generate bg-dark, text-primary, border-accent, etc. */
   --color-dark: #10121A;
   --color-primary: #7231FF;
-  --color-accent: #FFC01D;
+  --color-accent: #FFDF80;
   --color-soft-orange: #F48C06;
+  --color-gold: #9c7509b7;
 
   /* Font tokens → generate font-sans, font-mono */
   --font-sans: var(--font-geist-sans), sans-serif;
@@ -33,31 +34,8 @@ body {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1rem;
+  border: 0.05px solid #9c7509b7;
+  border-radius: 0.5rem;
   padding: 1.5rem;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-}
-
-@keyframes oilMove {
-  0%, 100% {
-    transform: translate(0,0) scale(1.06) rotate(0deg);
-    filter: hue-rotate(0deg) brightness(1.02);
-  }
-  50% {
-    transform: translate(-5%, -5%) scale(1.08) rotate(1deg);
-    filter: hue-rotate(10deg) brightness(1.05);
-  }
-  
-}
-@keyframes oilPan {
-  0%   { background-position:   0%   0%; }
-  50%  { background-position:  20%  25%; }
-  100% { background-position:   0%   0%; }
-}
-.animate-oilMove {
-  /* oilMove for subtle hue/scale, oilPan for drifting lines */
-  animation:
-    oilMove 20s ease-in-out infinite alternate,
-    oilPan 60s linear         infinite;
 }

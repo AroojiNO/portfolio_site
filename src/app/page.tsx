@@ -9,6 +9,7 @@ import { useGSAP } from "@gsap/react";
 
 import Threads from "./components/Threads";
 import TopographyHero from "./components/TopographyHero";
+import SkillBar from "./components/SkillBar";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
@@ -33,13 +34,6 @@ export default function HomePage() {
       return;
     }
 
-    if (heroRef.current) {
-      console.log('Hero Element:', heroRef.current);
-      console.log('Hero Element Offset Height:', heroRef.current.offsetHeight); // Should be your screen height
-    }
-    console.log('Window Inner Height (Viewport):', window.innerHeight);
-    console.log('Document Scroll Height (Total Scrollable):', document.documentElement.scrollHeight);
-
     // Set initial states for the animation
     // Welcome section starts slightly below its final position and invisible
     gsap.set(welcomeSectionRef.current, { y: 100, autoAlpha: 0 });
@@ -48,10 +42,10 @@ export default function HomePage() {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: heroRef.current,
-        start: "25% top", // Start when the top of the hero section hits the top of the viewport
+        start: "10% top", // Start when the top of the hero section hits the top of the viewport
         end: "bottom top",
         scrub: 1,
-        markers: true, // For debugging
+        //markers: true, // For debugging
 
         onEnter: (self) => {
           // Only trigger auto-scroll if scrolling down and not already auto-scrolling
@@ -82,11 +76,30 @@ export default function HomePage() {
         },
         
         onEnterBack: (self) => {
-           if (self.direction === -1 && !isAutoScrolling.current) {
-              //Potentially scroll back to hero section if desired
-           }
-        }
-        
+          // Auto-scroll up to hero section
+          if (self.direction === -1 && !isAutoScrolling.current) {
+            console.log(`ON ENTER BACK: Auto-scrolling UP to hero at scrollY: ${window.scrollY}`);
+            isAutoScrolling.current = true;
+            gsap.to(window, {
+              scrollTo: {
+                y: heroRef.current, // Target top of hero section (or 0 if hero is at page top)
+                offsetY: 0
+              },
+              duration: 2.5,
+              ease: "power2.inOut",
+              onComplete: () => {
+                isAutoScrolling.current = false;
+                ScrollTrigger.refresh();
+              },
+              onInterrupt: () => {
+                if (isAutoScrolling.current) {
+                  gsap.killTweensOf(window);
+                  isAutoScrolling.current = false;
+                }
+              }
+            });
+          }
+        },
       }
     });
          
@@ -135,10 +148,10 @@ export default function HomePage() {
       </section>
       {/* Glassmorphic Effect */}
       <div className="min-h-screen relative z-10 max-w-4xl mx-auto px-8 py-16 space-y-8 ">
-        <div style={{ width: "150%", height: "100%", position: "absolute", left:-250,  zIndex: -1 }}> 
+        <div style={{ width: "150%", height: "60%", position: "absolute", left:-250,  zIndex: -1, bottom:0 }}> 
           <Threads
-            amplitude={1.75}
-            distance={0.55}
+            amplitude={3.25}
+            distance={0.45}
             enableMouseInteraction={false}
             color={[0.447, 0.192, 1]}
           />
@@ -153,32 +166,72 @@ export default function HomePage() {
         </section>
 
         {/* About Me */}
-        <section className="glass border-soft-orange">
-          <h2 className="text-2xl font-semibold mb-3 text-accent">About Me</h2>
+        <section className="glass  text-opacity-80">
+          <img
+            src="../../personal-photo.png" // Example path
+            alt="Profile"
+            className="w-32 h-32 rounded-full mb-4 object-cover border-2 border-accent" // Example styling
+          />
+          <h2 
+            className="text-2xl font-semibold mb-4 text-accent">About Me</h2>
           <p className="text-gray-200">
             I’m currently a CS & Applied Statistics student at UVA, working on
-            full‑stack web apps and ML projects.
+            full‑stack web apps and Machine Learning projects.
           </p>
         </section>
 
         {/* Technologies / Skills */}
-        <section className="glass border-soft-orange">
-          <h2 className="text-2xl font-semibold mb-3 text-accent">
-            Upload a Photo
+        <section className="glass ">
+          <h2 className="text-2xl font-semibold mb-4 text-accent"> {/* Increased mb slightly for better spacing */}
+            Technologies & Languages
           </h2>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            className="block text-sm text-gray-200 mb-4"
-          />
-          {preview && (
+          <div className="flex flex-wrap gap-8 justify-center"> {/* Flex container for images */}
+            {/* Replace these placeholders with your actual technology images.
+              You will need to:
+              1. Add your image files to your project (e.g., in a public/images folder).
+              2. Update the `src` attribute to the correct path of your images.
+              3. Add an appropriate `alt` text for each image.
+              4. Adjust styling (width, height, etc.) as needed.
+            */}
             <img
-              src={preview}
-              alt="Preview"
-              className="w-40 h-40 object-cover rounded-full border-2 border-soft-orange"
+              src="../../java-icon.png" // Example path
+              alt="Java"
+              className="w-20 h-20 object-contain p-2 bg-gray-700 rounded-lg" // Example styling
             />
-          )}
+            <img
+              src="../../rstudio-icon.png" // Example path
+              alt="Java"
+              className="w-20 h-20 object-contain p-2 bg-gray-700 rounded-lg" // Example styling
+            />
+            <img
+              src="../../C-icon.png" // Example path
+              alt="C"
+              className="w-20 h-20 object-contain p-2 bg-gray-700 rounded-lg" // Example styling
+            />
+            <img
+              src="../../python-icon.png" // Example path
+              alt="Python"
+              className="w-20 h-20 object-contain p-2 bg-gray-700 rounded-lg" // Example styling
+            />
+            <img
+              src="../../react-icon.png" // Example path
+              alt="React / Typescript"
+              className="w-20 h-20 object-contain p-2 bg-gray-700 rounded-lg" // Example styling
+            />
+            <img
+              src="../../next-icon.png" // Example path
+              alt="Next.js"
+              className="w-20 h-20 object-contain p-2 bg-gray-700 rounded-lg" // Example styling
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-4 mt-8">
+            <SkillBar skillName="Java" level={5} />
+            <SkillBar skillName="R" level={4} />
+            <SkillBar skillName="C" level={4} />
+            <SkillBar skillName="Python" level={3} />
+            <SkillBar skillName="React + Typescript" level={4} />
+            <SkillBar skillName="Next.js" level={3} />
+          </div>
         </section>
 
         {/* Projects */}
