@@ -150,10 +150,10 @@ export default function HomePage() {
       </div>
     </section>
       {/* Glassmorphic Effect */}
-      <div className="" style={{ width: "100%", height: "60%", position: "absolute",  zIndex: 0, bottom:0}}> 
+      <div className="" style={{ width: "100%", height: "60%", position: "absolute",  zIndex: 0}}> 
           <Threads
-            amplitude={3.25}
-            distance={0.45}
+            amplitude={1.25}
+            distance={0.5}
             enableMouseInteraction={false}
             color={[0.447, 0.192, 1]}
           />
