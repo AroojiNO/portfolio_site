@@ -118,7 +118,7 @@ export default function HomePage() {
         autoAlpha: 1,     // Fade in
         y: 0,             // Slide to its original position (from y: 100)
         ease: "power1.out" // Easing function
-      }, 0.1); // Starts slightly after the hero animation begins
+      }, 0.2); // Starts slightly after the hero animation begins
 
   }, { scope: mainRef }); // Scope the context to mainRef if you use string selectors, good practice.
 
@@ -131,11 +131,12 @@ export default function HomePage() {
   return (
     <main ref={mainRef} className="relative min-h-screen bg-dark text-white font-sans">
       {/* Hero Component */}
-      <section ref={heroRef} className="bg-dark relative h-screen flex flex-col items-center overflow-hidden inset-0 z-0 ">
-       <TopographyHero 
+      <section ref={heroRef} className="bg-dark relative h-screen flex flex-col justify-center items-center overflow-hidden z-0 ">
+       <TopographyHero
           spacing={1.25}
-          enableMouseInteraction= {true}/>
-        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen text-center text-white p-4 pointer-events-none">
+          enableMouseInteraction= {true}
+          />
+        <div className="relative z-10 flex flex-col items-center justify-center inset-0 text-center text-white p-4 z-10">
           <div className="pointer-events-auto "> {/* Enable pointer events for this content block */}
             <h1 className=" text-5xl md:text-6xl font-bold">Noah Arooji</h1>
             <p className="mt-6 text-lg text-white md:text-xl max-w-md md:max-w-lg">
@@ -150,7 +151,7 @@ export default function HomePage() {
       </div>
     </section>
       {/* Glassmorphic Effect */}
-      <div className="" style={{ width: "100%", height: "60%", position: "absolute",  zIndex: 0}}> 
+      <div className="relative z-10" style={{ width: "100%", height: "60%", position: "absolute",  zIndex: 0}}> 
           <Threads
             amplitude={1.25}
             distance={0.5}
@@ -158,9 +159,9 @@ export default function HomePage() {
             color={[0.447, 0.192, 1]}
           />
         </div>
-      <div className="min-h-screen relative z-10 max-w-4xl mx-auto px-8 py-16 space-y-8 ">
+      <div ref={welcomeSectionRef} className="min-h-screen relative z-10 max-w-4xl mx-auto px-8 py-32 space-y-6 ">
         {/* Welcome */}
-        <section ref={welcomeSectionRef} className="py-10 ">
+        <section className="py-10 ">
           <h1 className="text-5xl font-bold mb-4">Welcome!</h1>
           <p className="text-lg text-gray-300">
             I’m Noah—a software engineer and researcher passionate about clean

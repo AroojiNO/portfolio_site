@@ -72,7 +72,7 @@ void main() {
 
   // --- Blob Shape Calculation ---
   float angle = atan(uv.y, uv.x);
-  float baseRadius = 0.450; // Base size of the blob (adjust for desired screen coverage)
+  float baseRadius = 0.500; // Base size of the blob (adjust for desired screen coverage)
 
   // Lobe Distortion (creates undulating edges)
   float lobeFrequency = 100.0; // Number of lobes
@@ -269,8 +269,8 @@ const TopographyHero: React.FC<TopographyHeroProps> = ({
   return (
     <div
       ref={containerRef}
-      className={`absolute inset-0 w-full h-full ${pointerEvents ? "" : "pointer-events-none"} -z-10`}
-      style={{ background: "transparent" }}
+      className={`absolute items-center inset-0 w-full h-full ${pointerEvents ? "" : "pointer-events-none"} -z-10`}
+      style={{ background: "transparent", justifyContent: "center", alignItems: "center" }}
     >
       {/* Canvas is appended here. The -z-10 and fixed positioning
           helps ensure it's a background element.
