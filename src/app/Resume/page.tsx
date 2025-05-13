@@ -3,14 +3,17 @@ import GlassCard from '../components/GlassCard'
 
 const ResumePage: React.FC = () => {
   return (
-    <div className="min-h-screen flex items-start justify-center pt-24 bg-[#0a0a0d]">
-      <GlassCard className="w-11/12 md:w-3/4 lg:w-2/3 xl:w-1/2 p-4">
+    <div className="flex h-screen items-start justify-center pt-24 bg-[#0a0a0d]"
+      style={{}}>
+      <div className="glass w-[80vh] h-[80vh] max-w-4xl p-4">
         <iframe
-          src="/resume.pdf"
+          src="/resume.pdf#zoom=86"
+          width="100%"
+          height="100%"
           title="Resume PDF"
-          className="w-full h-[90vh] border-none"
+          allow="scrolling, fullscreen"
         />
-      </GlassCard>
+        </div>
     </div>
   )
 }

@@ -72,7 +72,7 @@ void main() {
 
   // --- Blob Shape Calculation ---
   float angle = atan(uv.y, uv.x);
-  float baseRadius = 0.500; // Base size of the blob (adjust for desired screen coverage)
+  float baseRadius = 2.500; // Base size of the blob (adjust for desired screen coverage)
 
   // Lobe Distortion (creates undulating edges)
   float lobeFrequency = 100.0; // Number of lobes
