@@ -11,9 +11,7 @@ import Threads from "./components/Threads";
 import TopographyHero from "./components/TopographyHero";
 import SkillBar from "./components/SkillBar";
 import Link from "next/link";
-import GlassCard from "./components/GlassCard";
 import SocialMediaLinks from "./components/SocialButtons";
-import { backgroundBlurriness } from "three/tsl";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
@@ -58,7 +56,7 @@ export default function HomePage() {
 
             gsap.to(window, {
               scrollTo: {
-                y: welcomeSectionRef.current, // Scroll to the top of the welcome section
+                y: welcomeSectionRef.current!, // Scroll to the top of the welcome section
                 offsetY: 0 // Adjust if you have a sticky header or need padding
               },
               duration: 2.0, // Duration of the auto-scroll animation
@@ -86,7 +84,7 @@ export default function HomePage() {
             isAutoScrolling.current = true;
             gsap.to(window, {
               scrollTo: {
-                y: heroRef.current, // Target top of hero section (or 0 if hero is at page top)
+                y: heroRef.current!, // Target top of hero section (or 0 if hero is at page top)
                 offsetY: 0
               },
               duration: 2.5,
@@ -128,7 +126,7 @@ export default function HomePage() {
   const projects = [
     { title: "PromptLite", description: "(HooHacks 2025) Chrome extension for sustainable ChatGPT prompting.", href: "https://devpost.com/software/ecochat" },
     { title: "JavaFX Drone Show", description: "Image Bit Mapping for 'Dot' Drones", href: "https://github.com/AroojiNO/Drone-Show-Prototype" },
-    { title: "Project Three", description: "Short description here.", href: "#" },
+    //{ title: "Project Three", description: "Short description here.", href: "#" },
   ];
 
   return (
@@ -163,10 +161,10 @@ export default function HomePage() {
             color={[0.447, 0.192, 1]}
           />
         </div>
-      <div ref={welcomeSectionRef} className="min-h-screen relative z-10 max-w-4xl mx-auto px-8 py-32 space-y-6 ">
+      <div className="min-h-screen relative z-10 max-w-4xl mx-auto px-8 py-16 space-y-6 ">
         {/* Welcome */}
-        <section className="py-10 ">
-          <h1 className="text-5xl font-bold mb-4">Welcome!</h1>
+        <section ref={welcomeSectionRef} className="my-16 py-16 ">
+          <h1 className="text-5xl font-bold mb-4 my-24">Welcome!</h1>
           <p className="text-lg text-gray-300">
             I’m Noah—a software engineer and researcher creating clean
             design and performant code.
@@ -202,7 +200,7 @@ export default function HomePage() {
           <h2 
             className="text-2xl font-semibold mb-4 text-accent">About Me</h2>
           <p className="text-gray-200">
-            I’m currently a Computer Science & Applied Statistics student at UVA, working on
+            I’m currently a Computer Science & Applied Statistics student at the University of Virginia, working on
             full‑stack web apps and Machine Learning projects.
           </p>
         </section>

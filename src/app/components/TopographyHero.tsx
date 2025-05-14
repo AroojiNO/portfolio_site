@@ -165,7 +165,7 @@ const TopographyHero: React.FC<TopographyHeroProps> = ({
   enableMouseInteraction = true,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const animationFrameId = useRef<number>();
+  const animationFrameId = useRef<number>(null);
   const mousePosition = useRef(new Vec2(0.5, 0.5));
   const targetMousePosition = useRef(new Vec2(0.5, 0.5));
 
