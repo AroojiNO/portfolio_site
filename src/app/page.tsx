@@ -57,7 +57,7 @@ export default function HomePage() {
             gsap.to(window, {
               scrollTo: {
                 y: welcomeSectionRef.current!, // Scroll to the top of the welcome section
-                offsetY: 0 // Adjust if you have a sticky header or need padding
+                offsetY: 120 // Adjust if you have a sticky header or need padding
               },
               duration: 2.0, // Duration of the auto-scroll animation
               ease: "power2.inOut",
@@ -130,44 +130,61 @@ export default function HomePage() {
   ];
 
   return (
-    <main ref={mainRef} className="relative min-h-screen bg-dark text-white font-sans">
+    <main
+      ref={mainRef}
+      className="relative min-h-screen bg-dark text-white font-sans"
+    >
       {/* Hero Component */}
-      <section ref={heroRef} className="bg-dark relative h-screen flex flex-col justify-center items-center overflow-hidden z-0 "
-        style={{ borderRadius: "10px", transition: 'border-radius 0.3s ease', boxShadow: "0 0 0 100vmax rgba(0, 0, 0, 0.5)" }}>
-        <TopographyHero
-          spacing={1.25}
-          enableMouseInteraction={true}
-        />
+      <section
+        ref={heroRef}
+        className="bg-dark relative h-screen flex flex-col justify-center items-center overflow-hidden z-0 "
+        style={{
+          borderRadius: "10px",
+          transition: "border-radius 0.3s ease",
+          boxShadow: "0 0 0 100vmax rgba(0, 0, 0, 0.5)",
+        }}
+      >
+        <TopographyHero spacing={1.25} enableMouseInteraction={true} />
         <div className="relative z-10 flex flex-col items-center justify-center inset-0 text-center text-white p-4 z-10">
-          <div className="pointer-events-auto "> {/* Enable pointer events for this content block */}
+          <div className="pointer-events-auto ">
+            {" "}
+            {/* Enable pointer events for this content block */}
             <h1 className=" text-5xl md:text-6xl font-bold">Noah Arooji</h1>
             <p className="mt-6 text-lg text-white md:text-xl max-w-md md:max-w-lg">
               CS + STAT Portfolio
             </p>
             <Link href="/resume" passHref>
               <button className="mt-4 px-5 py-2 border border-yellow-400 text-yellow-300 rounded-full hover:bg-yellow-500 hover:text-black transition-colors duration-300 text-lg">
-              View Resume
-            </button>
-          </Link>
+                View Resume
+              </button>
+            </Link>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
       {/* Glassmorphic Effect */}
-      <div className="relative z-10" style={{ width: "100%", height: "60%", position: "absolute",  zIndex: 0}}> 
-          <Threads
-            amplitude={1.25}
-            distance={0.5}
-            enableMouseInteraction={false}
-            color={[0.447, 0.192, 1]}
-          />
-        </div>
-      <div className="min-h-screen relative z-10 max-w-4xl mx-auto px-8 py-16 space-y-6 ">
+      <div
+        className="relative z-10"
+        style={{
+          width: "100%",
+          height: "60%",
+          position: "absolute",
+          zIndex: 0,
+        }}
+      >
+        <Threads
+          amplitude={1.25}
+          distance={0.5}
+          enableMouseInteraction={false}
+          color={[0.447, 0.192, 1]}
+        />
+      </div>
+      <div className="min-h-screen relative z-10 max-w-4xl mx-auto px-8 py-4 space-y-6 ">
         {/* Welcome */}
-        <section ref={welcomeSectionRef} className="my-16 py-16 ">
-          <h1 className="text-5xl font-bold mb-4 my-24">Welcome!</h1>
+        <section ref={welcomeSectionRef} className="my-16 py-4 ">
+          <h1 className="text-5xl font-bold mb-4">Welcome!</h1>
           <p className="text-lg text-gray-300">
-            I’m Noah—a software engineer and researcher creating clean
-            design and performant code.
+            I’m Noah—a software engineer and researcher creating clean design
+            and performant code.
           </p>
         </section>
 
@@ -191,26 +208,30 @@ export default function HomePage() {
                 iconSrc: "../../github.png",
               },
               {
-                name:"Email",
+                name: "Email",
                 url: "mailto:noaharooji@gmail.com",
                 iconSrc: "../../gmail.png",
-              }
+              },
             ]}
           />
-          <h2 
-            className="text-2xl font-semibold mb-4 text-accent">About Me</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-accent">About Me</h2>
           <p className="text-gray-200">
-            I’m currently a Computer Science & Applied Statistics student at the University of Virginia, working on
-            full‑stack web apps and Machine Learning projects.
+            I’m currently a Computer Science & Applied Statistics student at the
+            University of Virginia, working on full‑stack web apps and Machine
+            Learning projects.
           </p>
         </section>
 
         {/* Technologies / Skills */}
         <section className="glass ">
-          <h2 className="text-2xl font-semibold mb-4 text-accent"> {/* Increased mb slightly for better spacing */}
-            Languages & Technologies 
+          <h2 className="text-2xl font-semibold mb-4 text-accent">
+            {" "}
+            {/* Increased mb slightly for better spacing */}
+            Languages & Technologies
           </h2>
-          <div className="flex flex-wrap gap-8 justify-center"> {/* Flex container for images */}
+          <div className="flex flex-wrap gap-8 justify-center">
+            {" "}
+            {/* Flex container for images */}
             {/* Replace these placeholders with your actual technology images.
               You will need to:
               1. Add your image files to your project (e.g., in a public/images folder).
@@ -277,6 +298,13 @@ export default function HomePage() {
           </div>
         </section>
       </div>
+      {/* Footer */}
+      <footer className="bg-dark text-center py-4 text-sm">
+        <p className="text-gray-400">
+          © {new Date().getFullYear()} Noah Arooji. All rights reserved.
+        </p>
+        <p className="text-gray-400 tx-sm">Built with Next.js + Tailwind CSS.</p>
+      </footer>
     </main>
   );
 }
