@@ -7,7 +7,7 @@ const ResumePage: React.FC = () => {
       style={{}}>
       <div className="glass w-[80vh] h-[80vh] max-w-4xl p-4">
         <iframe
-          src="/resume.pdf#zoom=86"
+          src="/Resume - Noah Arooji.pdf#zoom=86"
           width="100%"
           height="100%"
           title="Resume PDF"
