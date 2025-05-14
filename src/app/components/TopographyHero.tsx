@@ -142,8 +142,8 @@ void main() {
 
   // Subtle overall glow for the blob body, concentrated near the edges
   // This glow should be softer and more spread out than the lines.
-  float glowFalloff = 0.85; // How far the glow extends from the edge
-  float glowIntensity = 0.20;
+  float glowFalloff = 0.35; // How far the glow extends from the edge
+  float glowIntensity = 0.05;
   // Glow emanates from slightly inside the distortedRadius outwards
   float glowShape = smoothstep(distortedRadius + glowFalloff, distortedRadius - glowFalloff * 0.5, dist);
   color += mix(lineColor1, lineColor2, 0.6) * glowShape * glowIntensity * blobMask;

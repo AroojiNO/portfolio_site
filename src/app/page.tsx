@@ -43,7 +43,7 @@ export default function HomePage() {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: heroRef.current,
-        start: "10% top", // Start when the top of the hero section hits the top of the viewport
+        start: "5% top", // Start when the top of the hero section hits the top of the viewport
         end: "bottom top",
         scrub: 1,
         //markers: true, // For debugging
@@ -106,8 +106,8 @@ export default function HomePage() {
          
     // 1. Animate the hero section out
     tl.to(heroRef.current, {
-        autoAlpha: 0,     // Fade out
-        yPercent: -15,    // Move slightly upwards (e.g., 15% of its own height)
+        autoAlpha: 0.1,     // Fade out
+        yPercent: 0,    // Move slightly upwards (e.g., 15% of its own height)
         ease: "power1.in" // Easing function
       }, 0) // The '0' means this animation starts at the beginning of the timeline
 
@@ -131,11 +131,12 @@ export default function HomePage() {
   return (
     <main ref={mainRef} className="relative min-h-screen bg-dark text-white font-sans">
       {/* Hero Component */}
-      <section ref={heroRef} className="bg-dark relative h-screen flex flex-col justify-center items-center overflow-hidden z-0 ">
-       <TopographyHero
+      <section ref={heroRef} className="bg-dark relative h-screen flex flex-col justify-center items-center overflow-hidden z-0 "
+        style={{ borderRadius: "10px", transition: 'border-radius 0.3s ease', boxShadow: "0 0 0 100vmax rgba(0, 0, 0, 0.5)" }}>
+        <TopographyHero
           spacing={1.25}
-          enableMouseInteraction= {true}
-          />
+          enableMouseInteraction={true}
+        />
         <div className="relative z-10 flex flex-col items-center justify-center inset-0 text-center text-white p-4 z-10">
           <div className="pointer-events-auto "> {/* Enable pointer events for this content block */}
             <h1 className=" text-5xl md:text-6xl font-bold">Noah Arooji</h1>
