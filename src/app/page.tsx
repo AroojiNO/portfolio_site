@@ -127,7 +127,7 @@ export default function HomePage() {
 
   const projects = [
     { title: "PromptLite", description: "(HooHacks 2025) Chrome extension for sustainable ChatGPT prompting.", href: "https://devpost.com/software/ecochat" },
-    { title: "Project Two", description: "Short description here.", href: "#" },
+    { title: "JavaFX Drone Show", description: "Image Bit Mapping for 'Dot' Drones", href: "https://github.com/AroojiNO/Drone-Show-Prototype" },
     { title: "Project Three", description: "Short description here.", href: "#" },
   ];
 
