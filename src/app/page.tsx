@@ -147,7 +147,7 @@ export default function HomePage() {
               CS + STAT Portfolio
             </p>
             <Link href="/resume" passHref>
-              <button className="mt-4 px-5 py-2 border border-yellow-400 text-yellow-300 rounded-full hover:bg-yellow-400 hover:text-black transition-colors duration-300 text-lg">
+              <button className="mt-4 px-5 py-2 border border-yellow-400 text-yellow-300 rounded-full hover:bg-yellow-500 hover:text-black transition-colors duration-300 text-lg">
               View Resume
             </button>
           </Link>
@@ -168,7 +168,7 @@ export default function HomePage() {
         <section className="py-10 ">
           <h1 className="text-5xl font-bold mb-4">Welcome!</h1>
           <p className="text-lg text-gray-300">
-            I’m Noah—a software engineer and researcher passionate about clean
+            I’m Noah—a software engineer and researcher creating clean
             design and performant code.
           </p>
         </section>

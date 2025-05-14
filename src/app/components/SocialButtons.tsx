@@ -34,7 +34,7 @@ const SocialMediaLinks: React.FC<SocialMediaLinksProps> = ({
           href={profile.url}
           target="_blank"
           rel="noopener noreferrer" // Important for security and SEO
-          className={`${linkClassName} w-10 border-accent object-cover mb-4 border-1 rounded-[10px] bg-glass `} // Apply the link class name
+          className={`${linkClassName} w-10 border-accent object-cover mb-4 border-1 rounded-[10px] bg-glass hover:border-soft-orange transition-colors duration-300 `} // Apply the link class name
           aria-label={profile.ariaLabel || `Link to my ${profile.name} profile`} // For accessibility
         >
           <img
