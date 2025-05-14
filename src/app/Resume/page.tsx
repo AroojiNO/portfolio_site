@@ -1,5 +1,4 @@
 import React from 'react'
-import GlassCard from '../components/GlassCard'
 
 const ResumePage: React.FC = () => {
   return (
