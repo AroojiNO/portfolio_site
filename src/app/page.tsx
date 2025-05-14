@@ -190,7 +190,13 @@ export default function HomePage() {
                 name: "GitHub",
                 url: "https://github.com/AroojiNO",
                 iconSrc: "../../github.png",
-              }]}
+              },
+              {
+                name:"Email",
+                url: "mailto:noaharooji@gmail.com",
+                iconSrc: "../../gmail.png",
+              }
+            ]}
           />
           <h2 
             className="text-2xl font-semibold mb-4 text-accent">About Me</h2>
