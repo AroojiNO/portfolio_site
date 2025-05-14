@@ -11,6 +11,8 @@ import Threads from "./components/Threads";
 import TopographyHero from "./components/TopographyHero";
 import SkillBar from "./components/SkillBar";
 import Link from "next/link";
+import GlassCard from "./components/GlassCard";
+import SocialMediaLinks from "./components/SocialButtons";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
@@ -171,11 +173,24 @@ export default function HomePage() {
         </section>
 
         {/* About Me */}
-        <section className="glass  text-opacity-80">
+        <section className="glass text-opacity-80">
           <img
             src="../../personal-photo.png" // Example path
             alt="Profile"
             className="w-32 h-32 rounded-full mb-4 object-cover border-2 border-accent" // Example styling
+          />
+          <SocialMediaLinks
+            socialProfiles={[
+              {
+                name: "LinkedIn",
+                url: "https://www.linkedin.com/in/noah-arooji/",
+                iconSrc: "../../linkedin.png",
+              },
+              {
+                name: "GitHub",
+                url: "https://github.com/AroojiNO",
+                iconSrc: "../../github.png",
+              }]}
           />
           <h2 
             className="text-2xl font-semibold mb-4 text-accent">About Me</h2>
