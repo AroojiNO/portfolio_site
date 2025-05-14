@@ -13,6 +13,7 @@ import SkillBar from "./components/SkillBar";
 import Link from "next/link";
 import GlassCard from "./components/GlassCard";
 import SocialMediaLinks from "./components/SocialButtons";
+import { backgroundBlurriness } from "three/tsl";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
@@ -125,7 +126,7 @@ export default function HomePage() {
   }, { scope: mainRef }); // Scope the context to mainRef if you use string selectors, good practice.
 
   const projects = [
-    { title: "Project One", description: "Short description here.", href: "#" },
+    { title: "PromptLite", description: "(HooHacks 2025) Chrome extension for sustainable ChatGPT prompting.", href: "https://devpost.com/software/ecochat" },
     { title: "Project Two", description: "Short description here.", href: "#" },
     { title: "Project Three", description: "Short description here.", href: "#" },
   ];
@@ -271,7 +272,7 @@ export default function HomePage() {
                 className="glass p-6 hover:scale-[1.02] transition-transform"
               >
                 <h3 className="text-xl font-medium mb-2">{p.title}</h3>
-                <p className="text-gray-200 mb-4">{p.description}</p>
+                <p className="text-gray-300 text-sm mb-4">{p.description}</p>
                 <span className="text-accent font-semibold">View →</span>
               </a>
             ))}
