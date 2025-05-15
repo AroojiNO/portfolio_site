@@ -288,6 +288,8 @@ export default function HomePage() {
               <a
                 key={p.title}
                 href={p.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="glass p-6 hover:scale-[1.02] transition-transform"
               >
                 <h3 className="text-xl font-medium mb-2">{p.title}</h3>
