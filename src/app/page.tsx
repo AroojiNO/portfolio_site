@@ -171,12 +171,6 @@ export default function HomePage() {
           zIndex: 0,
         }}
       >
-        <Threads
-          amplitude={1.25}
-          distance={0.5}
-          enableMouseInteraction={false}
-          color={[0.447, 0.192, 1]}
-        />
       </div>
       <div className="min-h-screen relative z-10 max-w-4xl mx-auto px-8 py-4 space-y-6 ">
         {/* Welcome */}
@@ -189,7 +183,7 @@ export default function HomePage() {
         </section>
 
         {/* About Me */}
-        <section className="glass text-opacity-80">
+        <section className="glass text-opacity-80 justify-center items-center flex flex-col p-8 rounded-lg">
           <img
             src="../../personal-photo.png" // Example path
             alt="Profile"
@@ -214,12 +208,18 @@ export default function HomePage() {
               },
             ]}
           />
-          <h2 className="text-2xl font-semibold mb-4 text-accent">About Me</h2>
-          <p className="text-gray-200">
+          <h2 className="text-2xl font-semibold mb-4 text-accent text-center">About Me</h2>
+          <p className="text-gray-200 text-center">
             I’m currently a Computer Science & Applied Statistics student at the
             University of Virginia, working on full‑stack web apps and Machine
-            Learning projects.
+            Learning projects. <br></br> <br></br>
+            In my free time, I enjoy personal fitnesss and helping others learn about exercise. Come train with me! <br></br> <br></br>
           </p>
+          <Link
+              href="https://rec.virginia.edu/staff/personal-trainers/"
+              className="text-xl text-blue-400 hover:underline transition-colors duration-300"
+            > UVA Recreation
+          </Link>
         </section>
 
         {/* Technologies / Skills */}
