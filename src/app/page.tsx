@@ -163,7 +163,7 @@ export default function HomePage() {
       </section>
       {/* Glassmorphic Effect */}
       <div
-        className="relative z-10"
+        className="relative z-10 bg-dark"
         style={{
           width: "100%",
           height: "60%",
@@ -185,9 +185,9 @@ export default function HomePage() {
         {/* About Me */}
         <section className="glass text-opacity-80 justify-center items-center flex flex-col p-8 rounded-lg">
           <img
-            src="../../personal-photo.png" // Example path
+            src="../../personal-photo.png" 
             alt="Profile"
-            className="w-32 h-32 rounded-full mb-4 object-cover border-2 border-accent" // Example styling
+            className="w-32 h-32 rounded-full mb-4 object-cover border-2 border-accent" 
           />
           <SocialMediaLinks
             socialProfiles={[
@@ -213,23 +213,23 @@ export default function HomePage() {
             I’m currently a Computer Science & Applied Statistics student at the
             University of Virginia, working on full‑stack web apps and Machine
             Learning projects. <br></br> <br></br>
-            In my free time, I enjoy personal fitnesss and helping others learn about exercise. Come train with me! <br></br> <br></br>
+            In my spare time, I enjoy personal fitnesss and helping others learn about exercise. Come train with me! <br></br> <br></br>
           </p>
           <Link
               href="https://rec.virginia.edu/staff/personal-trainers/"
-              className="text-xl text-blue-400 hover:underline transition-colors duration-300"
+              className="text-3xl text-blue-400 hover:underline transition-colors duration-300"
             > UVA Recreation
           </Link>
         </section>
 
         {/* Technologies / Skills */}
         <section className="glass ">
-          <h2 className="text-2xl font-semibold mb-4 text-accent">
+          <h2 className="text-2xl font-semibold mb-6 text-accent text-center">
             {" "}
             {/* Increased mb slightly for better spacing */}
             Languages & Technologies
           </h2>
-          <div className="flex flex-wrap gap-8 justify-center">
+          <div className="flex flex-wrap gap-8 justify-center ">
             {" "}
             {/* Flex container for images */}
             {/* Replace these placeholders with your actual technology images.
@@ -240,34 +240,34 @@ export default function HomePage() {
               4. Adjust styling (width, height, etc.) as needed.
             */}
             <img
-              src="../../java-icon.png" // Example path
+              src="../../java-icon.png" 
               alt="Java"
-              className="w-20 h-20 object-contain p-2 bg-gray-700 rounded-lg" // Example styling
+              className="w-20 h-20 object-contain p-2 bg-gray-700 rounded-lg hover:scale-[1.08] hover:border border-accent transition-transform duration-300" 
             />
             <img
-              src="../../rstudio-icon.png" // Example path
+              src="../../rstudio-icon.png" 
               alt="Java"
-              className="w-20 h-20 object-contain p-2 bg-gray-700 rounded-lg" // Example styling
+              className="w-20 h-20 object-contain p-2 bg-gray-700 rounded-lg hover:scale-[1.08] hover:border border-accent transition-transform duration-300" 
             />
             <img
-              src="../../C-icon.png" // Example path
+              src="../../C-icon.png" 
               alt="C"
-              className="w-20 h-20 object-contain p-2 bg-gray-700 rounded-lg" // Example styling
+              className="w-20 h-20 object-contain p-2 bg-gray-700 rounded-lg hover:scale-[1.08] hover:border border-accent transition-transform duration-300" 
             />
             <img
-              src="../../python-icon.png" // Example path
+              src="../../python-icon.png" 
               alt="Python"
-              className="w-20 h-20 object-contain p-2 bg-gray-700 rounded-lg" // Example styling
+              className="w-20 h-20 object-contain p-2 bg-gray-700 rounded-lg hover:scale-[1.08] hover:border border-accent transition-transform duration-300" 
             />
             <img
-              src="../../react-icon.png" // Example path
+              src="../../react-icon.png" 
               alt="React / Typescript"
-              className="w-20 h-20 object-contain p-2 bg-gray-700 rounded-lg" // Example styling
+              className="w-20 h-20 object-contain p-2 bg-gray-700 rounded-lg hover:scale-[1.08] hover:border border-accent transition-transform duration-300" 
             />
             <img
-              src="../../next-icon.png" // Example path
+              src="../../next-icon.png" 
               alt="Next.js"
-              className="w-20 h-20 object-contain p-2 bg-gray-700 rounded-lg" // Example styling
+              className="w-20 h-20 object-contain p-2 bg-gray-700 rounded-lg hover:scale-[1.08] hover:border border-accent transition-transform duration-600" 
             />
           </div>
           <div className="grid grid-cols-2 gap-4 mt-8">
@@ -280,9 +280,14 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Experience */}
+        <section className="">
+          {/* NEEDS TO BE COMPLETED */}
+        </section>
+        
         {/* Projects */}
-        <section>
-          <h2 className="text-2xl font-semibold mb-6 text-accent">Projects</h2>
+        <section className= "">
+          <h2 className="text-3xl font-semibold mb-6 text-accent text-center">Projects</h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {projects.map((p) => (
               <a
@@ -299,14 +304,16 @@ export default function HomePage() {
             ))}
           </div>
         </section>
+        {/* Footer */}
+        <section className="">
+          <footer className="text-center py-4 text-sm">
+            <p className="text-gray-400">
+              © {new Date().getFullYear()} Noah Arooji. All rights reserved.
+            </p>
+            <p className="text-gray-400 tx-sm">Built with Next.js + Tailwind CSS.</p>
+          </footer>
+        </section>
       </div>
-      {/* Footer */}
-      <footer className="bg-dark text-center py-4 text-sm">
-        <p className="text-gray-400">
-          © {new Date().getFullYear()} Noah Arooji. All rights reserved.
-        </p>
-        <p className="text-gray-400 tx-sm">Built with Next.js + Tailwind CSS.</p>
-      </footer>
     </main>
   );
 }
