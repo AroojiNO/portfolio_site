@@ -2,9 +2,9 @@ import React from 'react';
 
 // Data for the skills section. You can easily update these arrays.
 const skillsData = {
-  languages: ["JavaScript (ES6+)", "TypeScript", "Python", "Java", "HTML5", "CSS3/Sass", "SQL"],
-  technologies: ["React", "Next.js", "Node.js", "Express", "Tailwind CSS", "GSAP", "Firebase", "MongoDB", "Git/GitHub"],
-  certifications: ["AWS Certified Cloud Practitioner", "Oracle Certified Associate, Java SE 8", "Responsive Web Design by freeCodeCamp"]
+  languages: ["Java", "C", "Python", "RStudio", "JavaScript / TypeScript", "HTML5", "SQL", "CSS"],
+  technologies: ["React", "Next.js", "Node.js", "Express.js", "Tailwind", "GSAP", "NumPy", "Git/GitHub", "Oracle Cloud Infrastructure"],
+  certifications: ["2025 Oracle Cloud Infrastructure Foundations", "2025 Oracle AI Foundations Associate"]
 };
 
 // Simple SVG icons for visual flair.

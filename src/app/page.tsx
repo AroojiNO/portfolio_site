@@ -193,7 +193,7 @@ export default function HomePage() {
               {
                 name: "LinkedIn",
                 url: "https://www.linkedin.com/in/noah-arooji/",
-                iconSrc: "../../linkedin.png",
+                iconSrc: "../../linkedin-logo.png",
               },
               {
                 name: "GitHub",
