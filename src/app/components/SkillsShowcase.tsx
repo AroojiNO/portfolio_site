@@ -35,10 +35,7 @@ const CertificateIcon = () => (
 const SkillShowcase = () => {
   const cardClasses = "transition-all duration-300 ease-in-out hover:scale-[1.03] hover:border-yellow-400/80 hover:shadow-[0_0_25px_rgba(250,204,21,0.4)]";
   return (
-    <section className="my-16 py-4">
-      <h2 className="text-3xl font-semibold mb-8 text-accent text-center">
-        Skills & Technologies
-      </h2>
+    <section className="my-2 py-4">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         
         {/* Languages Card */}

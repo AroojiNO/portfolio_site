@@ -211,8 +211,8 @@ export default function HomePage() {
             About Me
           </h2>
           <p className="text-gray-200 text-center">
-            I’m currently a Computer Science & Applied Statistics student at the
-            University of Virginia, working on full‑stack web apps and Machine
+            I’m currently a Computer Science & Applied Statistics student at <i>The
+            University of Virginia</i>, working on full‑stack web apps and Machine
             Learning projects. <br></br> <br></br>
             In my spare time, I enjoy personal fitnesss and helping others learn
             about exercise. Come train with me! <br></br> <br></br>
