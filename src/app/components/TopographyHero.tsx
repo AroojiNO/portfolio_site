@@ -49,10 +49,10 @@ const fragmentShader = `
 precision highp float;
 uniform float iTime;
 uniform vec2 iResolution;
-uniform vec2 uMouse; // Normalized mouse position (0,0 to 1,1)
-uniform float uSpacing; // Controls density of contour lines
+uniform vec2 uMouse;
+uniform float uSpacing;
 
-${noiseFunctionsGLSL} // Inject noise functions
+${noiseFunctionsGLSL}
 
 void main() {
   // --- UV & Centering & Aspect Correction ---
@@ -75,14 +75,14 @@ void main() {
   float baseRadius = 2.500; // Base size of the blob (adjust for desired screen coverage)
 
   // Lobe Distortion (creates undulating edges)
-  float lobeFrequency = 100.0; // Number of lobes
+  float lobeFrequency = 1.0; // Number of lobes
   float lobeAmplitude = 0.00000008;
-  float lobeTimePhase = iTime * 0.4;
+  float lobeTimePhase = iTime * 0.40;
   float lobeDistortion = lobeAmplitude * sin(angle * lobeFrequency + lobeTimePhase);
 
   // Perlin Noise Distortion (organic irregularities)
-  float noiseFrequency = 4.2;
-  float noiseAmplitude = 0.525;
+  float noiseFrequency = 1.2;
+  float noiseAmplitude = 1.525;
   float noiseTimePhase = iTime * 0.05;
   // Sample noise based on angle and a time-varied component for waviness
   vec2 noiseSamplePoint = uv * noiseFrequency; // using angle gives more consistent distortion around circle
@@ -100,8 +100,8 @@ void main() {
   float contourValue = dist - distortedRadius;
 
   // Animate the contour lines by shifting their phase with time
-  float linePhase = iTime * 0.4; // Controls speed of lines moving along the shape
-  float lineDensityFactor = 30.0; // Increase for more lines given a uSpacing value
+  float linePhase = iTime * 0.004; // Controls speed of lines moving along the shape
+  float lineDensityFactor = 20.0; // Increase for more lines given a uSpacing value
 
   float ringVal = mod(contourValue * lineDensityFactor + linePhase, uSpacing);
 
@@ -115,26 +115,46 @@ void main() {
   // These radii are in the same 'uv' space as 'dist' and 'baseRadius'.
   // Lines will be fully faded if dist < centralFadeEndRadius.
   // Lines will be fully visible if dist > centralFadeStartRadius.
-  float centralFadeEndRadius = 0.02;  // Lines fully gone inside this radius from center
-  float centralFadeStartRadius = 0.3; // Lines start appearing and become fully visible by this radius
+  float centralFadeEndRadius = 0.00;  // Lines fully gone inside this radius from center
+  float centralFadeStartRadius = 0.0; // Lines start appearing and become fully visible by this radius
 
   float centerFadeFactor = smoothstep(centralFadeEndRadius, centralFadeStartRadius, dist);
 
   float finalContourLineStrength = contourLine * centerFadeFactor;
 
   // --- Coloring & Glow ---
-  // Mask for the main blob shape with soft edges
-  float blobMask = smoothstep(0.015, -0.005, dist - distortedRadius); // Soft edge for the blob
+  // Three color sets for lines
+  vec3 lineColorSet1A = vec3(0.60, 0.35, 0.95); // Bright Purple
+  vec3 lineColorSet1B = vec3(0.35, 0.50, 1.00); // Lighter Blue
 
-  vec3 baseColor = vec3(0.01, 0.005, 0.02); // Very dark deep blue/purple (almost black)
-  vec3 lineColor1 = vec3(0.60, 0.35, 0.95);   // Bright Purple (like reference)
-  vec3 lineColor2 = vec3(0.35, 0.50, 1.00);   // Lighter Blue (like reference)
+  vec3 lineColorSet2A = vec3(1.0, 0.75, 0.2);   // Amber (#FFC01D)
+  vec3 lineColorSet2B = vec3(0.29, 0.34, 0.67); // Indigo (#4956AB)
 
-  // Mix line colors based on angle or another varying factor for dynamism
+  vec3 lineColorSet3A = vec3(0.0, 0.8, 0.5);    // Emerald (#00CC80)
+  vec3 lineColorSet3B = vec3(0.56, 0.0, 1.0);   // Violet (#8F00FF)
+
+  // Pick which color set to use based on angle and time, so different parts transition at different times
+  float colorCycle = mod(iTime * 0.08 + angle * 1.5, 3.0);
+
+  vec3 colorA;
+  vec3 colorB;
+  if (colorCycle < 1.0) {
+    colorA = mix(lineColorSet1A, lineColorSet2A, colorCycle);
+    colorB = mix(lineColorSet1B, lineColorSet2B, colorCycle);
+  } else if (colorCycle < 2.0) {
+    colorA = mix(lineColorSet2A, lineColorSet3A, colorCycle - 1.0);
+    colorB = mix(lineColorSet2B, lineColorSet3B, colorCycle - 1.0);
+  } else {
+    colorA = mix(lineColorSet3A, lineColorSet1A, colorCycle - 2.0);
+    colorB = mix(lineColorSet3B, lineColorSet1B, colorCycle - 2.0);
+  }
+
   float colorMixFactor = 0.5 + 0.5 * sin(angle * 2.5 + iTime * 0.2);
-  vec3 finalLineColor = mix(lineColor1, lineColor2, colorMixFactor);
+  vec3 finalLineColor = mix(colorA, colorB, colorMixFactor);
 
   // Start with the base color for the blob's body
+  float blobMask = smoothstep(distortedRadius, distortedRadius - 0.05, dist);
+  vec3 baseColor = vec3(0.01, 0.005, 0.02);
   vec3 color = baseColor * blobMask;
 
   // Add the sharp contour lines. They should be bright and only appear within the blob.
@@ -146,7 +166,7 @@ void main() {
   float glowIntensity = 0.05;
   // Glow emanates from slightly inside the distortedRadius outwards
   float glowShape = smoothstep(distortedRadius + glowFalloff, distortedRadius - glowFalloff * 0.5, dist);
-  color += mix(lineColor1, lineColor2, 0.6) * glowShape * glowIntensity * blobMask;
+  color += mix(colorA, colorB, 0.6) * glowShape * glowIntensity * blobMask;
 
 
   gl_FragColor = vec4(color, blobMask); // Use blobMask for alpha to fade edges smoothly
