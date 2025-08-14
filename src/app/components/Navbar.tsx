@@ -8,8 +8,8 @@ export default function Navbar() {
   const pathname = usePathname();
   const links = [
     { href: "/", label: "Home" },
-    { href: "/resume", label: "Resume" },
-    { href: "/papers", label: "Papers" },
+    { href: "/Resume", label: "Resume" },
+    { href: "/Papers", label: "Papers" },
   ];
 
   return (
