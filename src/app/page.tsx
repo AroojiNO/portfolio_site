@@ -154,7 +154,7 @@ export default function HomePage() {
             <p className="mt-6 text-lg text-white md:text-xl max-w-md md:max-w-lg">
               CS + STAT Portfolio
             </p>
-            <Link href="/Resume" passHref>
+            <Link href="/resume" passHref>
               <button className="mt-4 px-5 py-2 border border-yellow-400 text-yellow-300 rounded-full hover:bg-yellow-500 hover:text-black transition-colors duration-300 text-lg">
                 View Resume
               </button>
