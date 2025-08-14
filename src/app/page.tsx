@@ -9,6 +9,7 @@ import { useGSAP } from "@gsap/react";
 
 import TopographyHero from "./components/TopographyHero";
 import SkillsShowcase from "./components/SkillsShowcase";
+import Experiences from "./components/Experiences";
 import Link from "next/link";
 import SocialMediaLinks from "./components/SocialButtons";
 
@@ -226,11 +227,13 @@ export default function HomePage() {
           </Link>
         </section>
 
+        {/* Experience */}
+        <section className="">
+          <Experiences />
+        </section>
+
         {/* Technologies / Skills */}
         <SkillsShowcase />
-
-        {/* Experience */}
-        <section className="">{/* NEEDS TO BE COMPLETED */}</section>
 
         {/* Projects */}
         <section className="">

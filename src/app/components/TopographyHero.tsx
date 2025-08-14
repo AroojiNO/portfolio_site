@@ -149,7 +149,7 @@ void main() {
     colorB = mix(lineColorSet3B, lineColorSet1B, colorCycle - 2.0);
   }
 
-  float colorMixFactor = 0.5 + 0.5 * sin(angle * 2.5 + iTime * 0.2);
+  float colorMixFactor = 0.25 + 0.05 * sin(angle * 2.5 + iTime * 0.2);
   vec3 finalLineColor = mix(colorA, colorB, colorMixFactor);
 
   // Start with the base color for the blob's body
