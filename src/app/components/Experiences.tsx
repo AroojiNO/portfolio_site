@@ -4,20 +4,8 @@ import React, { useState } from 'react';
 
 // --- Data for the Experience Timeline (Updated from Resume) ---
 const experiences = [
-  {
+    {
     id: 1,
-    organization: "Mythics LLC",
-    position: "Software Engineer Intern",
-    dates: "May 2025 - Present",
-    description: [
-      "Led a sales team of 5–10 through procurement of an internal AI prospecting tool that surfaces 20+ high-quality leads per run.",
-      "Drove over $1M in net new pipeline opportunities per use by creating an intuitive sales opportunity dashboard.",
-      "Automated data ingestion and enrichment with an Express.js backend API, cutting manual data entry by 100%."
-    ],
-    skills: ["React", "Express.js", "Oracle ADW Warehouse"]
-  },
-  {
-    id: 2,
     organization: "School of Data Science",
     position: "Machine Learning Researcher",
     dates: "May 2025 - Present",
@@ -27,6 +15,18 @@ const experiences = [
       "Researched synthetic data generation for enhancing time-series prediction in language models."
     ],
     skills: ["Python", "Selenium", "BeautifulSoup", "NumPy"]
+  },
+  {
+    id: 2,
+    organization: "Mythics LLC",
+    position: "Software Engineer Intern",
+    dates: "May 2025 - August 2025",
+    description: [
+      "Led a sales team of 5–10 through procurement of an internal AI prospecting tool that surfaces 20+ high-quality leads per run.",
+      "Drove over $1M in net new pipeline opportunities per use by creating an intuitive sales opportunity dashboard.",
+      "Automated data ingestion and enrichment with an Express.js backend API, cutting manual data entry by 100%."
+    ],
+    skills: ["React", "Express.js", "Oracle ADW Warehouse"]
   },
   {
     id: 3,
