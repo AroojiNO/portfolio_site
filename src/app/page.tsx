@@ -12,7 +12,6 @@ import SkillsShowcase from "./components/SkillsShowcase";
 import Experiences from "./components/Experiences";
 import Link from "next/link";
 import SocialMediaLinks from "./components/SocialButtons";
-import ShinyText from '../components/ShinyText';
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
@@ -155,7 +154,7 @@ export default function HomePage() {
             <div className="mt-2 flex flex-wrap items-center justify-center gap-2">
             <div className="mt-2 text-center">
             <div className="mx-auto h-[1px] w-56 bg-gradient-to-r from-amber-300/60 via-amber-200 to-amber-300/60"></div>
-            <p className="mt-3 text-sm text-slate-200 tracking-wide">
+            <p className="mt-3 text-lg text-slate-200 font-bold tracking-wide">
               Computer Science · Applied Statistics · Machine Learning
             </p>
           </div>
@@ -217,8 +216,8 @@ export default function HomePage() {
           <h2 className="text-2xl font-semibold mb-4 text-accent text-center">
             About Me
           </h2>
-          <p className="text-gray-200 text-center">
-            I’m currently a Computer Science & Applied Statistics student at <i>The
+          <p className="text-gray-200 text-center text-xl">
+            I’m currently a Computer Science and Applied Statistics student at <i>The
             University of Virginia</i>, working on full‑stack web apps and Machine
             Learning projects. <br></br> <br></br>
             In my spare time, I enjoy personal fitnesss and helping others learn
