@@ -12,6 +12,7 @@ import SkillsShowcase from "./components/SkillsShowcase";
 import Experiences from "./components/Experiences";
 import Link from "next/link";
 import SocialMediaLinks from "./components/SocialButtons";
+import ShinyText from '../components/ShinyText';
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
@@ -150,10 +151,15 @@ export default function HomePage() {
           <div className="pointer-events-auto ">
             {" "}
             {/* Enable pointer events for this content block */}
-            <h1 className=" text-5xl md:text-6xl font-bold">Noah Arooji</h1>
-            <p className="mt-6 text-lg text-white md:text-xl max-w-md md:max-w-lg">
-              CS + STAT Portfolio
+            <h1 className=" text-5xl md:text-6xl">Noah Arooji</h1>
+            <div className="mt-2 flex flex-wrap items-center justify-center gap-2">
+            <div className="mt-2 text-center">
+            <div className="mx-auto h-[1px] w-56 bg-gradient-to-r from-amber-300/60 via-amber-200 to-amber-300/60"></div>
+            <p className="mt-3 text-sm text-slate-200 tracking-wide">
+              Computer Science · Applied Statistics · Machine Learning
             </p>
+          </div>
+          </div>
             <Link href="/resume" passHref>
               <button className="mt-4 px-5 py-2 border border-yellow-400 text-yellow-300 rounded-full hover:bg-yellow-500 hover:text-black transition-colors duration-300 text-lg">
                 View Resume
@@ -219,7 +225,7 @@ export default function HomePage() {
             about exercise. Come train with me! <br></br> <br></br>
           </p>
           <Link
-            href="https://rec.virginia.edu/staff/personal-trainers/"
+            href="https://rec.virginia.edu/active/fitness/personal-training/personal-trainers"
             className="text-3xl text-blue-400 hover:underline transition-colors duration-300"
           >
             {" "}
