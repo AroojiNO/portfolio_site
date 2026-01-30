@@ -108,7 +108,7 @@ export const technicalSkills: TechnicalSkills = {
 // Professional Experience
 export const experience: ExperienceItem[] = [
   {
-    company: "Mythics, LLC",
+    company: "Mythics",
     position: "Software Engineer Intern",
     location: "Virginia Beach, VA",
     dates: "May 2025 – August 2025",
