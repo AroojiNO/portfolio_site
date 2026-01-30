@@ -18,7 +18,7 @@ const experiences = [
   },
   {
     id: 2,
-    organization: "Mythics LLC",
+    organization: "Mythics",
     position: "Software Engineer Intern",
     dates: "May 2025 - August 2025",
     description: [
