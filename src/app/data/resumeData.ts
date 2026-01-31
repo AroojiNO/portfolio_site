@@ -39,6 +39,7 @@ export interface ProjectItem {
   technologies: string;
   date: string;
   bullets: string[];
+  images?: string[]; // Array of image paths/URLs for carousel
   links?: {
     github?: string;
     demo?: string;
@@ -155,6 +156,12 @@ export const projects: ProjectItem[] = [
       "Implemented lightweight data persistence using the Chrome Storage API, locally caching token counts and prompt metadata for real-time efficiency tracking",
       "Rendered dynamic data visualization modules with Recharts, transforming token-level logs into clear trend insights on user efficiency and sustainability",
     ],
+    images: [
+      "/promptlite-1.jpg",
+      "/promptlite-2.jpg",
+      "/promptlite-3.jpg",
+      "/promptlite-4.jpg",
+    ],
     links: {
       devpost: "https://devpost.com/software/ecochat",
     },
@@ -167,6 +174,10 @@ export const projects: ProjectItem[] = [
       "Engineered a full-stack macronutrient tracking application using React.js, Flask, and Expo, supporting cross-platform deployment for web and mobile clients",
       "Deployed and managed the application on AWS EC2 with S3 storage, integrating RESTful Flask APIs for real-time nutrient computation and user authentication",
       "Scaled backend services to reliably handle 100+ active users, improving request latency and data synchronization across devices",
+    ],
+    images: [
+      "/macrotracker-1.png",
+      "/macrotracker-2.png"
     ],
   },
 ];
