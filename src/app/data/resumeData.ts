@@ -65,9 +65,11 @@ export const education: Education = {
   expectedGraduation: "Expected May 2027",
   coursework: [
     "Data Structures and Algorithms",
-    "Computer Systems & Organizations",
+    "Computer Systems & Organizations", 
+    "Software Engineering",
     "Software Development Essentials",
     "Regression Analysis",
+    "Mathematical Statistics",
   ],
 };
 
