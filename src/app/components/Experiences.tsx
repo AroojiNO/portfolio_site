@@ -10,33 +10,33 @@ const experiences = [
     position: "Machine Learning Researcher",
     dates: "May 2025 - Present",
     description: [
-      "Engineered an automated web scraping pipeline using Selenium and BeautifulSoup, extracting 1000+ records in 8 minutes (a 95.6% efficiency increase).",
-      "Calculated anomaly detection of time series inconsistencies using NumPy and openpyxl, catching over 30 inconsistent data sets.",
-      "Researched synthetic data generation for enhancing time-series prediction in language models."
+      "Built an automated data pipeline using BeautifulSoup and Selenium, extracting 3000+ records in 8 minutes, down from 3 hours, resulting in 95.6% increased efficiency",
+      "Designed Python anomaly-detection utilities with aligned time-series embeddings, leveraging PyTorch and Pandas causing removal of 30+ insufficient time series datasets",
+      "Engineered Python utilities and automated time series preprocessing workflows leading to 45% improved model training performance"
     ],
     skills: ["Python", "Selenium", "BeautifulSoup", "NumPy"]
   },
   {
     id: 2,
-    organization: "Mythics LLC",
+    organization: "Mythics",
     position: "Software Engineer Intern",
     dates: "May 2025 - August 2025",
     description: [
-      "Led a sales team of 5–10 through procurement of an internal AI prospecting tool that surfaces 20+ high-quality leads per run.",
-      "Drove over $1M in net new pipeline opportunities per use by creating an intuitive sales opportunity dashboard.",
-      "Automated data ingestion and enrichment with an Express.js backend API, cutting manual data entry by 100%."
+      "Led a cross-functional team of 5–10 through development of a full-stack client prospecting tool surfacing 20+ high-quality business leads per run and $1M in generated business pipelines",
+      "Contributed 600+ lines of code for a client insights dashboard using React.js (Typescript) emphasizing reusable components and maintainable state management",
+      "Architected data ingestion and enrichment with REST API endpoints leveraging Express.js and Oracle ADW to fetch 50,000+ records in sub 600ms latency"
     ],
     skills: ["React", "Express.js", "Oracle ADW Warehouse"]
   },
   {
     id: 3,
     organization: "Collaborative Robotics Lab",
-    position: "Robotics Researcher",
+    position: "Machine Learning Researcher",
     dates: "Jan 2025 - June 2025",
     description: [
-      "Developed LLaMA-3 powered AI speech-to-text and text-to-speech, enabling human-robot communication and improving interaction latency by 25%.",
-      "Designed and iterated on natural language systems optimized for low-latency deployment on embedded Stretch robots.",
-      "Modularized ROS2 nodes for LLM-based communication, cutting integration time by ~40% and streamlining debugging."
+      "Managed the development of Llama-3 powered AI speech-to-text and text-to-speech, enabling human-robot communication, improving interaction latency by 25%.",
+      "Implemented an intuitive GUI enhancing robot responses and blocking hallucinations, while maintaining sub-300ms response times between participants and robots",
+      "Led the modularization of ROS2 nodes for LLM-based communication, lowering integration time by approximately 40%"
     ],
     skills: ["LLaMA-3", "NLP", "ROS2", "Embedded Systems"]
   },

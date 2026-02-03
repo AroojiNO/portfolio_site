@@ -12,6 +12,7 @@ import SkillsShowcase from "./components/SkillsShowcase";
 import Experiences from "./components/Experiences";
 import Link from "next/link";
 import SocialMediaLinks from "./components/SocialButtons";
+import { projects } from "./data/resumeData";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
@@ -57,7 +58,7 @@ export default function HomePage() {
             gsap.to(window, {
               scrollTo: {
                 y: welcomeSectionRef.current!, // Scroll to the top of the welcome section
-                offsetY: 120 // Adjust if you have a sticky header or need padding
+                offsetY: 160 // Adjust if you have a sticky header or need padding
               },
               duration: 2.0, // Duration of the auto-scroll animation
               ease: "power2.inOut",
@@ -123,11 +124,8 @@ export default function HomePage() {
 
   }, { scope: mainRef }); // Scope the context to mainRef if you use string selectors, good practice.
 
-  const projects = [
-    { title: "PromptLite", description: "(HooHacks 2025) Chrome extension for sustainable ChatGPT prompting.", href: "https://devpost.com/software/ecochat" },
-    { title: "JavaFX Drone Show", description: "Image Bit Mapping for 'Dot' Drones", href: "https://github.com/AroojiNO/Drone-Show-Prototype" },
-    //{ title: "Project Three", description: "Short description here.", href: "#" },
-  ];
+  // Get first 2 projects for featured section
+  const featuredProjects = projects.slice(0, 2);
 
   return (
     <main
@@ -177,9 +175,9 @@ export default function HomePage() {
           zIndex: 0,
         }}
       ></div>
-      <div className="min-h-screen relative z-10 max-w-4xl mx-auto px-8 py-4 space-y-6 ">
+      <div className="min-h-screen relative z-10 max-w-4xl mx-auto px-8 py-12 space-y-6 ">
         {/* Welcome */}
-        <section ref={welcomeSectionRef} className="my-16 py-4 ">
+        <section ref={welcomeSectionRef} className="my-24 py-4 ">
           <h1 className="text-5xl font-bold mb-4">Welcome!</h1>
           <p className="text-lg text-gray-300">
             I’m Noah—a software engineer and researcher creating clean design
@@ -240,25 +238,37 @@ export default function HomePage() {
         {/* Technologies / Skills */}
         <SkillsShowcase />
 
-        {/* Projects */}
+        {/* Featured Projects */}
         <section className="">
-          <h2 className="text-3xl font-semibold mb-6 text-accent text-center">
-            Projects
+          <h2 className="text-3xl font-semibold mb-4 text-accent text-center">
+            Featured Projects
           </h2>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {projects.map((p) => (
+          <p className="text-gray-300 text-center mb-8">
+            Recent highlights from my work
+          </p>
+          <div className="grid gap-6 sm:grid-cols-2">
+            {featuredProjects.map((project) => (
               <a
-                key={p.title}
-                href={p.href}
+                key={project.name}
+                href={project.links?.devpost || project.links?.github || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="glass p-6 hover:scale-[1.02] transition-transform"
               >
-                <h3 className="text-xl font-medium mb-2">{p.title}</h3>
-                <p className="text-gray-300 text-sm mb-4">{p.description}</p>
-                <span className="text-accent font-semibold">View →</span>
+                <h3 className="text-xl font-medium mb-2">{project.name}</h3>
+                <p className="text-sm text-accent mb-2">{project.technologies}</p>
+                <p className="text-gray-300 text-sm mb-4">{project.bullets[0]}</p>
+                <span className="text-accent font-semibold">Learn More →</span>
               </a>
             ))}
+          </div>
+          <div className="text-center mt-8">
+            <Link
+              href="/projects"
+              className="inline-block px-6 py-3 border-2 border-accent text-accent rounded-full hover:bg-accent hover:text-dark transition-all duration-300"
+            >
+              View All Projects →
+            </Link>
           </div>
         </section>
         {/* Footer */}
