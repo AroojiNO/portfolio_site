@@ -13,7 +13,7 @@ export default function ResumeProjectsSection({ projects }: ResumeProjectsSectio
       {projects.map((project, index) => (
         <div
           key={index}
-          className="print:break-inside-avoid p-4 rounded-lg border border-transparent hover:border-primary/20 hover:bg-primary/5 hover:shadow-[0_0_20px_rgba(114,49,255,0.15)] transition-all duration-300 -mx-4 print:mx-0 print:p-0 print:hover:border-transparent print:hover:bg-transparent print:hover:shadow-none"
+          className="print:break-inside-avoid p-4 rounded-lg border border-transparent hover:border-primary/20 hover:bg-primary/5 hover:shadow-[0_0_20px_rgba(99,102,241,0.15)] transition-all duration-300 -mx-4 print:mx-0 print:p-0 print:hover:border-transparent print:hover:bg-transparent print:hover:shadow-none"
         >
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-1">
             <div className="flex items-center gap-2 flex-wrap">

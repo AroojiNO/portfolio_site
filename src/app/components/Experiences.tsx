@@ -19,7 +19,7 @@ const ExperienceTimeline = () => {
       <div className="relative flex flex-col space-y-8">
         {/* The timeline line: along the left edge on phones, centered from md up */}
         <div
-          className="absolute z-0 top-0 bottom-0 left-2.5 md:left-1/2 w-1 md:w-2 -translate-x-1/2 rounded-full bg-gradient-to-b from-amber-400 to-violet-500 shadow-md"
+          className="absolute z-0 top-0 bottom-0 left-2.5 md:left-1/2 w-1 md:w-2 -translate-x-1/2 rounded-full bg-gradient-to-b from-amber-400 to-indigo-500 shadow-md"
         ></div>
 
         {/* Mapping over experiences */}
@@ -55,7 +55,7 @@ const ExperienceTimeline = () => {
               >
                 {/* --- HEADER --- */}
                 <h3 className="text-xl font-bold text-white">{exp.company}</h3>
-                <p className="text-violet-300 font-semibold">{exp.position}</p>
+                <p className="text-indigo-300 font-semibold">{exp.position}</p>
                 <p className="mt-1 text-sm text-gray-400">
                   {exp.dates} · {exp.location}
                 </p>

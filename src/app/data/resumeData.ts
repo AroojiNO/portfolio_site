@@ -126,7 +126,7 @@ export const experience: ExperienceItem[] = [
     skills: ["Java", "AWS Fargate", "InfluxDB", "TypeScript"],
   },
   {
-    company: "Mythics, LLC",
+    company: "Mythics",
     position: "Software Engineer Intern",
     location: "Virginia Beach, VA",
     dates: "May 2025 – August 2025",

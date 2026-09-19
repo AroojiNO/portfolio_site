@@ -92,7 +92,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
           className="group relative"
         >
           {/* Project Card */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-6 md:p-8 rounded-xl border border-gray-800/50 bg-gradient-to-br from-dark/50 to-dark/30 hover:border-primary/30 hover:shadow-[0_0_30px_rgba(114,49,255,0.15)] transition-all duration-500">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-6 md:p-8 rounded-xl border border-gray-800/50 bg-gradient-to-br from-dark/50 to-dark/30 hover:border-primary/30 hover:shadow-[0_0_30px_rgba(99,102,241,0.15)] transition-all duration-500">
 
             {/* Left Column - Project Details */}
             <div className="flex flex-col justify-between space-y-4">

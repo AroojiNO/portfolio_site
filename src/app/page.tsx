@@ -217,14 +217,6 @@ export default function HomePage() {
               </Link>
             ))}
           </div>
-          <div className="text-center mt-8">
-            <Link
-              href="/projects"
-              className="inline-block px-6 py-3 border-2 border-accent text-accent rounded-full hover:bg-accent hover:text-dark transition-all duration-300"
-            >
-              View All Projects →
-            </Link>
-          </div>
         </section>
         {/* Footer */}
         <section className="">

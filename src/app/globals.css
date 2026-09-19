@@ -8,7 +8,7 @@
 @theme {
   /* Color tokens → generate bg-dark, text-primary, border-accent, etc. */
   --color-dark: #10121A;
-  --color-primary: #7231FF;
+  --color-primary: #6366F1; /* indigo, the site's cool secondary color */
   --color-accent: #FFDF80;
   --color-soft-orange: #F48C06;
 
