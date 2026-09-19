@@ -207,7 +207,8 @@ export default function HomePage() {
                 name: "Email",
                 url: `mailto:${contactInfo.email}`,
                 icon: <Mail className="h-5 w-5" />,
-                ariaLabel: "Email me",
+                ariaLabel: "Copy email address",
+                copyText: contactInfo.email,
               },
             ]}
           />

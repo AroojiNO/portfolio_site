@@ -1,10 +1,13 @@
-import React from 'react';
+"use client";
+
+import React, { useEffect, useRef, useState } from 'react';
 
 export interface SocialProfile {
   name: string;
   url: string;
   icon: React.ReactNode; // Icon rendered inside the link; inherits the link's text color
   ariaLabel?: string; // Optional more specific aria-label
+  copyText?: string; // When set, clicking copies this text instead of following the link
 }
 
 export interface SocialMediaLinksProps {
@@ -31,13 +34,57 @@ const SocialMediaLinks: React.FC<SocialMediaLinksProps> = ({
   containerClassName = '',
   linkClassName = '',
 }) => {
+  const [copiedName, setCopiedName] = useState<string | null>(null);
+  const resetTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  useEffect(() => () => clearTimeout(resetTimer.current), []);
+
   if (!socialProfiles || socialProfiles.length === 0) {
     return null; // Don't render anything if there are no profiles
   }
 
+  const handleCopy = async (profile: SocialProfile) => {
+    try {
+      await navigator.clipboard.writeText(profile.copyText!);
+      setCopiedName(profile.name);
+      clearTimeout(resetTimer.current);
+      resetTimer.current = setTimeout(() => setCopiedName(null), 2000);
+    } catch {
+      // The browser can block clipboard access; follow the link instead
+      window.location.href = profile.url;
+    }
+  };
+
+  const buttonClassName = `flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-gray-300 transition-colors duration-300 hover:border-accent hover:text-accent ${linkClassName}`;
+
   return (
     <div className={`flex gap-3 ${containerClassName}`}>
       {socialProfiles.map((profile: SocialProfile) => {
+        if (profile.copyText) {
+          const isCopied = copiedName === profile.name;
+          return (
+            <div key={profile.name} className="relative">
+              <button
+                type="button"
+                onClick={() => handleCopy(profile)}
+                className={buttonClassName}
+                aria-label={profile.ariaLabel || `Copy my ${profile.name}`}
+                title={profile.ariaLabel || `Copy my ${profile.name}`}
+              >
+                {profile.icon}
+              </button>
+              {/* Confirmation bubble; role="status" also announces it to screen readers */}
+              <span
+                role="status"
+                className={`pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-accent/30 bg-dark px-2 py-1 text-xs text-accent transition-opacity duration-300 ${
+                  isCopied ? 'opacity-100' : 'opacity-0'
+                }`}
+              >
+                {isCopied ? `${profile.name} copied!` : ''}
+              </span>
+            </div>
+          );
+        }
+
         // mailto: links shouldn't open an empty tab
         const isExternal = profile.url.startsWith('http');
         return (
@@ -46,7 +93,7 @@ const SocialMediaLinks: React.FC<SocialMediaLinksProps> = ({
             href={profile.url}
             target={isExternal ? '_blank' : undefined}
             rel={isExternal ? 'noopener noreferrer' : undefined}
-            className={`flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-gray-300 transition-colors duration-300 hover:border-accent hover:text-accent ${linkClassName}`}
+            className={buttonClassName}
             aria-label={profile.ariaLabel || `Link to my ${profile.name} profile`}
           >
             {profile.icon}
