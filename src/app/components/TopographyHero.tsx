@@ -243,7 +243,24 @@ const TopographyHero: React.FC<TopographyHeroProps> = ({
       renderer.render({ scene: mesh });
       animationFrameId.current = requestAnimationFrame(updateLoop);
     };
-    animationFrameId.current = requestAnimationFrame(updateLoop);
+
+    // Only draw while the hero is on screen, so the shader doesn't keep the GPU busy after scrolling past it
+    const startLoop = () => {
+      if (animationFrameId.current === null) {
+        animationFrameId.current = requestAnimationFrame(updateLoop);
+      }
+    };
+    const stopLoop = () => {
+      if (animationFrameId.current !== null) {
+        cancelAnimationFrame(animationFrameId.current);
+        animationFrameId.current = null;
+      }
+    };
+    const visibilityObserver = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) startLoop();
+      else stopLoop();
+    });
+    visibilityObserver.observe(container);
 
     const handleMouseMove = (e: MouseEvent) => {
       if (!enableMouseInteraction || !container) return;
@@ -270,9 +287,8 @@ const TopographyHero: React.FC<TopographyHeroProps> = ({
     }
 
     return () => {
-      if (animationFrameId.current) {
-        cancelAnimationFrame(animationFrameId.current);
-      }
+      visibilityObserver.disconnect();
+      stopLoop();
       window.removeEventListener("resize", resize);
       if (enableMouseInteraction) {
         eventTarget.removeEventListener("mousemove", handleMouseMove as EventListener);

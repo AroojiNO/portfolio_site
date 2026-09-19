@@ -11,6 +11,7 @@ import SkillsShowcase from "./components/SkillsShowcase";
 import Experiences from "./components/Experiences";
 import SectionHeading from "./components/SectionHeading";
 import Link from "next/link";
+import Image from "next/image";
 import SocialMediaLinks, { GitHubIcon, LinkedInIcon } from "./components/SocialButtons";
 import { ChevronDown, Mail } from "lucide-react";
 import { contactInfo, projects } from "./data/resumeData";
@@ -156,9 +157,13 @@ export default function HomePage() {
 
         {/* About Me */}
         <section className="glass text-opacity-80 justify-center items-center flex flex-col p-8 rounded-lg">
-          <img
-            src="../../personal-photo.png"
-            alt="Profile"
+          {/* The photo is landscape, so object-cover draws it about 229px wide to fill the 128px circle */}
+          <Image
+            src="/personal-photo.png"
+            alt="Noah Arooji"
+            width={693}
+            height={387}
+            sizes="229px"
             className="w-32 h-32 rounded-full mb-4 object-cover border-2 border-accent"
           />
           <SocialMediaLinks
