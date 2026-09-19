@@ -7,7 +7,7 @@ Interactive portfolio built with Next.js showcasing experience, projects, and sk
 - GSAP-powered scroll transitions that guide visitors from hero to content.
 - Expandable experience timeline, skills/cards grid, and project highlights.
 - Inline resume viewer at `/resume`
-- Placeholder papers page at `/papers` for future writing.
+- Placeholder papers page at `/papers` for future writing, hidden (shows the 404 page) until `PAPERS_PUBLISHED` in `src/app/papers/page.tsx` is set to `true`.
 
 ## Tech Stack
 - Next.js 15 (App Router) + React 19
