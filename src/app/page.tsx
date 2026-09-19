@@ -128,11 +128,6 @@ export default function HomePage() {
           <div className="pointer-events-auto ">
             {" "}
             {/* Enable pointer events for this content block */}
-            {/* Availability badge */}
-            <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-dark/60 px-4 py-1.5 text-sm text-gray-200 backdrop-blur-sm">
-              <span className="h-2 w-2 rounded-full bg-emerald-400 motion-safe:animate-pulse" aria-hidden="true" />
-              Open to new-grad SWE roles starting 2027
-            </p>
             <h1 className=" text-5xl md:text-6xl">Noah Arooji</h1>
             <div className="mt-2 flex flex-wrap items-center justify-center gap-2">
             <div className="mt-2 text-center">
