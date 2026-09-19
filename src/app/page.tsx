@@ -78,6 +78,30 @@ export default function HomePage() {
         ease: "none"
       }, 0);
 
+    // 4. Reveal each section the first time it scrolls into view (skipped if the visitor prefers reduced motion)
+    const mm = gsap.matchMedia();
+    mm.add("(prefers-reduced-motion: no-preference)", () => {
+      gsap.utils.toArray<HTMLElement>("[data-reveal]", mainRef.current).forEach((section) => {
+        gsap.fromTo(
+          section,
+          { autoAlpha: 0, y: 40 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: section,
+              start: "top 85%",
+              // Play once: opening an experience card shifts the sections below it,
+              // and a reversing reveal could then fade a section out while it's still on screen
+              once: true,
+            },
+          }
+        );
+      });
+    });
+
   }, { scope: mainRef }); // Scope the context to mainRef if you use string selectors, good practice.
 
   // Get first 2 projects for featured section
@@ -161,7 +185,7 @@ export default function HomePage() {
         </section>
 
         {/* About Me */}
-        <section className="glass text-opacity-80 justify-center items-center flex flex-col p-8 rounded-lg">
+        <section data-reveal className="glass text-opacity-80 justify-center items-center flex flex-col p-8 rounded-lg">
           {/* The photo is landscape, so object-cover draws it about 229px wide to fill the 128px circle */}
           <Image
             src="/personal-photo.png"
@@ -203,15 +227,17 @@ export default function HomePage() {
         </section>
 
         {/* Experience */}
-        <section className="">
+        <section data-reveal>
           <Experiences />
         </section>
 
         {/* Technologies / Skills */}
-        <SkillsShowcase />
+        <div data-reveal>
+          <SkillsShowcase />
+        </div>
 
         {/* Featured Projects */}
-        <section className="my-16">
+        <section data-reveal className="my-16">
           <SectionHeading title="Featured Projects" subtitle="Recent highlights from my work" />
           <div className="grid gap-6 sm:grid-cols-2">
             {featuredProjects.map((project) => (
