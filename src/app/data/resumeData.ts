@@ -66,11 +66,9 @@ export const education: Education = {
   expectedGraduation: "Expected May 2027",
   coursework: [
     "Data Structures and Algorithms",
-    "Computer Systems & Organizations", 
-    "Software Engineering",
-    "Software Development Essentials",
+    "Machine Learning",
+    "Artificial Intelligence",
     "Regression Analysis",
-    "Mathematical Statistics",
   ],
 };
 
@@ -111,13 +109,24 @@ export const technicalSkills: TechnicalSkills = {
 // Professional Experience
 export const experience: ExperienceItem[] = [
   {
-    company: "Mythics",
+    company: "Amazon Web Services (AWS)",
+    position: "Software Development Engineer Intern",
+    location: "Herndon, VA",
+    dates: "May 2026 – August 2026",
+    bullets: [
+      "Designed and built a value insights system surfacing $15M in actionable price intelligence daily, replacing manual spreadsheets with an on-demand dashboard and cutting manual record pricing by 99% for internal metering teams",
+      "Architected a distributed pricing application in Java hosted on AWS Fargate, leveraging an event-driven pipeline to process 7,000 billing records per minute with 99.94% file success rate",
+      "Engineered data ingestion to handle 5M writes per hour to InfluxDB, optimizing batch writes and time-series indexing to serve sub-second time-range queries to React.js (TypeScript) dashboards",
+    ],
+  },
+  {
+    company: "Mythics, LLC",
     position: "Software Engineer Intern",
     location: "Virginia Beach, VA",
     dates: "May 2025 – August 2025",
     bullets: [
-      "Led a cross-functional team of 5–10 through development of a full-stack client prospecting tool surfacing 20+ high-quality business leads per run and $1M in generated business pipelines",
-      "Contributed 600+ lines of code for a client insights dashboard using React.js (Typescript) emphasizing reusable components and maintainable state management",
+      "Led a cross-functional team of 5–10 through development of a full-stack client prospecting tool surfacing 20+ high-quality business leads and $1M in generated business pipelines per use",
+      "Built interactive data visualization components in React.js with modular state management, rendering client metrics across filterable lead scoring views, reducing lead evaluation time by 40% across 3 internal teams",
       "Architected data ingestion and enrichment with REST API endpoints leveraging Express.js and Oracle ADW to fetch 50,000+ records in sub 600ms latency",
     ],
   },
@@ -127,20 +136,9 @@ export const experience: ExperienceItem[] = [
     location: "Charlottesville, VA",
     dates: "April 2025 – Present",
     bullets: [
-      "Built an automated data pipeline using BeautifulSoup and Selenium, extracting 3000+ records in 8 minutes, down from 3 hours, resulting in 95.6% increased efficiency",
-      "Designed Python anomaly-detection utilities with aligned time-series embeddings, leveraging PyTorch and Pandas causing removal of 30+ insufficient time series datasets",
-      "Engineered Python utilities and automated time series preprocessing workflows leading to 45% improved model training performance",
-    ],
-  },
-  {
-    company: "UVA Collaborative Robotics Lab",
-    position: "Machine Learning Researcher",
-    location: "Charlottesville, VA",
-    dates: "January 2025 – June 2025",
-    bullets: [
-      "Managed the development of Llama-3 powered AI speech-to-text and text-to-speech, enabling human-robot communication, improving interaction latency by 25%",
-      "Implemented an intuitive GUI enhancing robot responses and blocking hallucinations, while maintaining sub-300ms response times between participants and robots",
-      "Led the modularization of ROS2 nodes for LLM-based communication, lowering integration time by approximately 40%",
+      "Trained a CLIP-based multimodal retrieval model using PyTorch, aligning time-series chart embeddings with natural language descriptions across 3,000+ Federal Reserve economic blog posts",
+      "Built scalable preprocessing pipelines in Pandas and NumPy, transforming raw economic time-series records into structured contrastive learning pairs, reducing data preparation time by 95%",
+      "Optimized model training through systematic data quality filtering and time-series alignment, removing 30+ insufficient data pairs and improving validation recall convergence by 45% across encoder configuration experiments",
     ],
   },
 ];
@@ -152,7 +150,7 @@ export const projects: ProjectItem[] = [
     technologies: "React.js, TailwindCSS, Vite, Chrome API",
     date: "March 2025",
     bullets: [
-      "Built a Chrome Extension using React.js, TailwindCSS, and Vite, reducing user ChatGPT token waste by 30% while visualizing users sustainable AI usage patterns",
+      "Built a Chrome Extension using React.js, TailwindCSS, and Vite, reducing user ChatGPT token waste by 30% while visualizing users’ sustainable AI usage patterns",
       "Implemented lightweight data persistence using the Chrome Storage API, locally caching token counts and prompt metadata for real-time efficiency tracking",
       "Rendered dynamic data visualization modules with Recharts, transforming token-level logs into clear trend insights on user efficiency and sustainability",
     ],
@@ -188,7 +186,7 @@ export const leadership: ExperienceItem[] = [
     company: "UVA Personal Trainer",
     position: "Personal Trainer",
     location: "Charlottesville, VA",
-    dates: "January 2025 – Present",
+    dates: "January 2025 – August 2026",
     bullets: [
       "Guided over 20 clients through 100+ personalized sessions, breaking down complex goals into actionable steps for long-term client growth",
       "Constructed measurable performance metrics, increasing program adherence and goal completion by 25%",

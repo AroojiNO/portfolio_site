@@ -6,30 +6,42 @@ import React, { useState } from 'react';
 const experiences = [
     {
     id: 1,
-    organization: "School of Data Science",
-    position: "Machine Learning Researcher",
-    dates: "May 2025 - Present",
+    organization: "Amazon Web Services",
+    position: "Software Development Engineer Intern",
+    dates: "May 2026 - August 2026",
     description: [
-      "Built an automated data pipeline using BeautifulSoup and Selenium, extracting 3000+ records in 8 minutes, down from 3 hours, resulting in 95.6% increased efficiency",
-      "Designed Python anomaly-detection utilities with aligned time-series embeddings, leveraging PyTorch and Pandas causing removal of 30+ insufficient time series datasets",
-      "Engineered Python utilities and automated time series preprocessing workflows leading to 45% improved model training performance"
+      "Designed and built a value insights system surfacing $15M in actionable price intelligence daily, replacing manual spreadsheets with an on-demand dashboard and cutting manual record pricing by 99% for internal metering teams",
+      "Architected a distributed pricing application in Java hosted on AWS Fargate, leveraging an event-driven pipeline to process 7,000 billing records per minute with 99.94% file success rate",
+      "Engineered data ingestion to handle 5M writes per hour to InfluxDB, optimizing batch writes and time-series indexing to serve sub-second time-range queries to React.js (TypeScript) dashboards"
     ],
-    skills: ["Python", "Selenium", "BeautifulSoup", "NumPy"]
+    skills: ["Java", "AWS Fargate", "InfluxDB", "TypeScript"]
   },
   {
     id: 2,
+    organization: "School of Data Science",
+    position: "Machine Learning Researcher",
+    dates: "April 2025 - Present",
+    description: [
+      "Trained a CLIP-based multimodal retrieval model using PyTorch, aligning time-series chart embeddings with natural language descriptions across 3,000+ Federal Reserve economic blog posts",
+      "Built scalable preprocessing pipelines in Pandas and NumPy, transforming raw economic time-series records into structured contrastive learning pairs, reducing data preparation time by 95%",
+      "Optimized model training through systematic data quality filtering and time-series alignment, removing 30+ insufficient data pairs and improving validation recall convergence by 45% across encoder configuration experiments"
+    ],
+    skills: ["PyTorch", "CLIP", "Pandas", "NumPy"]
+  },
+  {
+    id: 3,
     organization: "Mythics",
     position: "Software Engineer Intern",
     dates: "May 2025 - August 2025",
     description: [
-      "Led a cross-functional team of 5–10 through development of a full-stack client prospecting tool surfacing 20+ high-quality business leads per run and $1M in generated business pipelines",
-      "Contributed 600+ lines of code for a client insights dashboard using React.js (Typescript) emphasizing reusable components and maintainable state management",
+      "Led a cross-functional team of 5–10 through development of a full-stack client prospecting tool surfacing 20+ high-quality business leads and $1M in generated business pipelines per use",
+      "Built interactive data visualization components in React.js with modular state management, rendering client metrics across filterable lead scoring views, reducing lead evaluation time by 40% across 3 internal teams",
       "Architected data ingestion and enrichment with REST API endpoints leveraging Express.js and Oracle ADW to fetch 50,000+ records in sub 600ms latency"
     ],
     skills: ["React", "Express.js", "Oracle ADW Warehouse"]
   },
   {
-    id: 3,
+    id: 4,
     organization: "Collaborative Robotics Lab",
     position: "Machine Learning Researcher",
     dates: "Jan 2025 - June 2025",
@@ -87,7 +99,7 @@ const ExperienceTimeline = () => {
                 className={`glass p-6 rounded-lg shadow-lg w-full md:w-[48%] cursor-pointer transition-all duration-500 ease-in-out overflow-hidden ${
                   isRightSide ? 'self-end md:ml-[45%]' : 'self-start'
                 } ${
-                  isExpanded ? 'max-h-[500px]' : 'max-h-[260px] md:max-h-[240px]'
+                  isExpanded ? 'max-h-[900px]' : 'max-h-[260px] md:max-h-[240px]'
                 } ${cardClasses}`}
                 onClick={() => handleToggle(exp.id)}
               >
