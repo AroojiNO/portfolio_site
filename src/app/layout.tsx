@@ -20,7 +20,7 @@ const description =
 export const metadata: Metadata = {
   // Makes the generated preview image URL absolute for link previews
   metadataBase: new URL("https://www.noaharooji.com"),
-  title: "Noah Arooji · Software Engineer & ML Researcher",
+  title: "Noah Arooji's Personal Portfolio",
   description,
   openGraph: {
     title: "Noah Arooji · Software Engineer & ML Researcher",
