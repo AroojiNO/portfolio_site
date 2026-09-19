@@ -4,17 +4,18 @@ import { useState, ChangeEvent, useEffect, useRef } from "react";
 
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { useGSAP } from "@gsap/react";
 
 import TopographyHero from "./components/TopographyHero";
 import SkillsShowcase from "./components/SkillsShowcase";
 import Experiences from "./components/Experiences";
+import SectionHeading from "./components/SectionHeading";
 import Link from "next/link";
-import SocialMediaLinks from "./components/SocialButtons";
-import { projects } from "./data/resumeData";
+import SocialMediaLinks, { GitHubIcon, LinkedInIcon } from "./components/SocialButtons";
+import { ChevronDown, Mail } from "lucide-react";
+import { contactInfo, projects } from "./data/resumeData";
 
-gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+gsap.registerPlugin(ScrollTrigger);
 
 export default function HomePage() {
   const [preview, setPreview] = useState<string | null>(null);
@@ -29,19 +30,21 @@ export default function HomePage() {
   const mainRef = useRef<HTMLElement>(null); // Optional: for scoping GSAP context
   const heroRef = useRef<HTMLElement>(null);
   const welcomeSectionRef = useRef<HTMLElement>(null); // Ref for the actual welcome section
+  const glowsRef = useRef<HTMLDivElement>(null);
 
-  const isAutoScrolling = useRef(false);
   useGSAP(() => {
-    if (!heroRef.current || !welcomeSectionRef.current) {
-      console.warn("Hero or Welcome section ref is not available for animation.");
+    if (!heroRef.current || !welcomeSectionRef.current || !glowsRef.current) {
+      console.warn("Hero, Welcome section or glows ref is not available for animation.");
       return;
     }
 
     // Set initial states for the animation
     // Welcome section starts slightly below its final position and invisible
     gsap.set(welcomeSectionRef.current, { y: 100, autoAlpha: 0 });
+    // Background glows stay hidden over the hero
+    gsap.set(glowsRef.current, { autoAlpha: 0 });
 
-    // Create a GSAP timeline
+    // Create a GSAP timeline that follows the scrollbar (no automatic scrolling)
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: heroRef.current,
@@ -49,63 +52,9 @@ export default function HomePage() {
         end: "bottom top",
         scrub: 1,
         //markers: true, // For debugging
-
-        onEnter: (self) => {
-          // Only trigger auto-scroll if scrolling down and not already auto-scrolling
-          if (self.direction === 1 && !isAutoScrolling.current) {
-            isAutoScrolling.current = true;
-
-            gsap.to(window, {
-              scrollTo: {
-                y: welcomeSectionRef.current!, // Scroll to the top of the welcome section
-                offsetY: 160 // Adjust if you have a sticky header or need padding
-              },
-              duration: 2.0, // Duration of the auto-scroll animation
-              ease: "power2.inOut",
-              onComplete: () => {
-                isAutoScrolling.current = false;
-                // Refresh ScrollTrigger positions after programmatic scroll
-                ScrollTrigger.refresh();
-              },
-              onInterrupt: () => {
-                // If user manually scrolls during the auto-scroll, stop the auto-scroll
-                if (isAutoScrolling.current) {
-                  gsap.killTweensOf(window); // Kills the specific scrollTo tween
-                  isAutoScrolling.current = false;
-                }
-              }
-            });
-          }
-        },
-        
-        onEnterBack: (self) => {
-          // Auto-scroll up to hero section
-          if (self.direction === -1 && !isAutoScrolling.current) {
-            console.log(`ON ENTER BACK: Auto-scrolling UP to hero at scrollY: ${window.scrollY}`);
-            isAutoScrolling.current = true;
-            gsap.to(window, {
-              scrollTo: {
-                y: heroRef.current!, // Target top of hero section (or 0 if hero is at page top)
-                offsetY: 0
-              },
-              duration: 2.5,
-              ease: "power2.inOut",
-              onComplete: () => {
-                isAutoScrolling.current = false;
-                ScrollTrigger.refresh();
-              },
-              onInterrupt: () => {
-                if (isAutoScrolling.current) {
-                  gsap.killTweensOf(window);
-                  isAutoScrolling.current = false;
-                }
-              }
-            });
-          }
-        },
       }
     });
-         
+
     // 1. Animate the hero section out
     tl.to(heroRef.current, {
         autoAlpha: 0.1,     // Fade out
@@ -120,7 +69,13 @@ export default function HomePage() {
         autoAlpha: 1,     // Fade in
         y: 0,             // Slide to its original position (from y: 100)
         ease: "power1.out" // Easing function
-      }, 0.2); // Starts slightly after the hero animation begins
+      }, 0.2) // Starts slightly after the hero animation begins
+
+    // 3. Fade the background glows in as the hero leaves
+    .to(glowsRef.current, {
+        autoAlpha: 1,
+        ease: "none"
+      }, 0);
 
   }, { scope: mainRef }); // Scope the context to mainRef if you use string selectors, good practice.
 
@@ -153,17 +108,28 @@ export default function HomePage() {
             <div className="mt-2 text-center">
             <div className="mx-auto h-[1px] w-56 bg-gradient-to-r from-amber-300/60 via-amber-200 to-amber-300/60"></div>
             <p className="mt-3 text-lg text-slate-200 font-bold tracking-wide">
-              Computer Science · Applied Statistics · Machine Learning
+              Software Engineer & Machine Learning Researcher
             </p>
           </div>
           </div>
-            <Link href="/resume" passHref>
-              <button className="mt-4 px-5 py-2 border border-yellow-400 text-yellow-300 rounded-full hover:bg-yellow-500 hover:text-black transition-colors duration-300 text-lg">
-                View Resume
-              </button>
+            <Link
+              href="/resume"
+              className="mt-4 inline-block px-5 py-2 border border-accent text-accent rounded-full hover:bg-accent hover:text-dark transition-colors duration-300 text-lg"
+            >
+              View Resume
             </Link>
           </div>
         </div>
+        {/* Fade the hero's bottom edge into the page background */}
+        <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-dark" />
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: heroRef.current?.offsetHeight ?? window.innerHeight, behavior: "smooth" })}
+          aria-label="Scroll to content"
+          className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 text-accent/70 hover:text-accent transition-colors duration-300 motion-safe:animate-bounce"
+        >
+          <ChevronDown className="h-8 w-8" />
+        </button>
       </section>
       {/* Glassmorphic Effect */}
       <div
@@ -175,14 +141,17 @@ export default function HomePage() {
           zIndex: 0,
         }}
       ></div>
+      {/* Ambient glows fixed to the screen, so the content scrolls over them and they feel far away.
+          They echo the hero's amber and indigo lines and fade in as the hero scrolls out (see useGSAP above). */}
+      <div ref={glowsRef} aria-hidden="true" className="pointer-events-none fixed inset-0 z-[1] overflow-hidden">
+        <div className="glow glow-amber -left-[30vmax] -top-[32vmax] h-[80vmax] w-[80vmax] [--drift-duration:60s] [--pulse-duration:9s]" />
+        <div className="glow glow-indigo -right-[38vmax] -top-[5vmax] h-[90vmax] w-[90vmax] [--drift-duration:72s] [--drift-delay:-36s] [--pulse-duration:12s] [--pulse-delay:-5s]" />
+        <div className="glow glow-indigo -left-[32vmax] -bottom-[50vmax] h-[85vmax] w-[85vmax] [--drift-duration:84s] [--drift-delay:-20s] [--pulse-duration:14s] [--pulse-delay:-9s]" />
+      </div>
       <div className="min-h-screen relative z-10 max-w-4xl mx-auto px-8 py-12 space-y-6 ">
         {/* Welcome */}
         <section ref={welcomeSectionRef} className="my-24 py-4 ">
           <h1 className="text-5xl font-bold mb-4">Welcome!</h1>
-          <p className="text-lg text-gray-300">
-            I’m Noah—a software engineer and researcher creating clean design
-            and performant code.
-          </p>
         </section>
 
         {/* About Me */}
@@ -193,41 +162,34 @@ export default function HomePage() {
             className="w-32 h-32 rounded-full mb-4 object-cover border-2 border-accent"
           />
           <SocialMediaLinks
+            containerClassName="mb-4"
             socialProfiles={[
               {
                 name: "LinkedIn",
-                url: "https://www.linkedin.com/in/noah-arooji/",
-                iconSrc: "../../linkedin-logo.png",
+                url: `https://www.${contactInfo.linkedin}`,
+                icon: <LinkedInIcon className="h-5 w-5" />,
               },
               {
                 name: "GitHub",
-                url: "https://github.com/AroojiNO",
-                iconSrc: "../../github.png",
+                url: `https://${contactInfo.github}`,
+                icon: <GitHubIcon className="h-5 w-5" />,
               },
               {
                 name: "Email",
-                url: "mailto:noaharooji@gmail.com",
-                iconSrc: "../../gmail.png",
+                url: `mailto:${contactInfo.email}`,
+                icon: <Mail className="h-5 w-5" />,
+                ariaLabel: "Email me",
               },
             ]}
           />
-          <h2 className="text-2xl font-semibold mb-4 text-accent text-center">
-            About Me
-          </h2>
+          <SectionHeading title="About Me" className="mb-4" />
           <p className="text-gray-200 text-center text-xl">
             I’m currently a Computer Science and Applied Statistics student at <i>The
             University of Virginia</i>, working on full‑stack web apps and Machine
             Learning projects. <br></br> <br></br>
-            In my spare time, I enjoy personal fitnesss and helping others learn
-            about exercise. Come train with me! <br></br> <br></br>
+            In my spare time, I enjoy personal fitness and helping others learn
+            about exercise. <br></br> <br></br>
           </p>
-          <Link
-            href="https://rec.virginia.edu/active/fitness/personal-training/personal-trainers"
-            className="text-3xl text-blue-400 hover:underline transition-colors duration-300"
-          >
-            {" "}
-            UVA Recreation
-          </Link>
         </section>
 
         {/* Experience */}
@@ -239,27 +201,20 @@ export default function HomePage() {
         <SkillsShowcase />
 
         {/* Featured Projects */}
-        <section className="">
-          <h2 className="text-3xl font-semibold mb-4 text-accent text-center">
-            Featured Projects
-          </h2>
-          <p className="text-gray-300 text-center mb-8">
-            Recent highlights from my work
-          </p>
+        <section className="my-16">
+          <SectionHeading title="Featured Projects" subtitle="Recent highlights from my work" />
           <div className="grid gap-6 sm:grid-cols-2">
             {featuredProjects.map((project) => (
-              <a
+              <Link
                 key={project.name}
-                href={project.links?.devpost || project.links?.github || "#"}
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/projects"
                 className="glass p-6 hover:scale-[1.02] transition-transform"
               >
                 <h3 className="text-xl font-medium mb-2">{project.name}</h3>
                 <p className="text-sm text-accent mb-2">{project.technologies}</p>
                 <p className="text-gray-300 text-sm mb-4">{project.bullets[0]}</p>
                 <span className="text-accent font-semibold">Learn More →</span>
-              </a>
+              </Link>
             ))}
           </div>
           <div className="text-center mt-8">

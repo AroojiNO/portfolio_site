@@ -1,139 +1,99 @@
 "use client";
 
 import React, { useState } from 'react';
-
-// --- Data for the Experience Timeline (Updated from Resume) ---
-const experiences = [
-    {
-    id: 1,
-    organization: "Amazon Web Services",
-    position: "Software Development Engineer Intern",
-    dates: "May 2026 - August 2026",
-    description: [
-      "Designed and built a value insights system surfacing $15M in actionable price intelligence daily, replacing manual spreadsheets with an on-demand dashboard and cutting manual record pricing by 99% for internal metering teams",
-      "Architected a distributed pricing application in Java hosted on AWS Fargate, leveraging an event-driven pipeline to process 7,000 billing records per minute with 99.94% file success rate",
-      "Engineered data ingestion to handle 5M writes per hour to InfluxDB, optimizing batch writes and time-series indexing to serve sub-second time-range queries to React.js (TypeScript) dashboards"
-    ],
-    skills: ["Java", "AWS Fargate", "InfluxDB", "TypeScript"]
-  },
-  {
-    id: 2,
-    organization: "School of Data Science",
-    position: "Machine Learning Researcher",
-    dates: "April 2025 - Present",
-    description: [
-      "Trained a CLIP-based multimodal retrieval model using PyTorch, aligning time-series chart embeddings with natural language descriptions across 3,000+ Federal Reserve economic blog posts",
-      "Built scalable preprocessing pipelines in Pandas and NumPy, transforming raw economic time-series records into structured contrastive learning pairs, reducing data preparation time by 95%",
-      "Optimized model training through systematic data quality filtering and time-series alignment, removing 30+ insufficient data pairs and improving validation recall convergence by 45% across encoder configuration experiments"
-    ],
-    skills: ["PyTorch", "CLIP", "Pandas", "NumPy"]
-  },
-  {
-    id: 3,
-    organization: "Mythics",
-    position: "Software Engineer Intern",
-    dates: "May 2025 - August 2025",
-    description: [
-      "Led a cross-functional team of 5–10 through development of a full-stack client prospecting tool surfacing 20+ high-quality business leads and $1M in generated business pipelines per use",
-      "Built interactive data visualization components in React.js with modular state management, rendering client metrics across filterable lead scoring views, reducing lead evaluation time by 40% across 3 internal teams",
-      "Architected data ingestion and enrichment with REST API endpoints leveraging Express.js and Oracle ADW to fetch 50,000+ records in sub 600ms latency"
-    ],
-    skills: ["React", "Express.js", "Oracle ADW Warehouse"]
-  },
-  {
-    id: 4,
-    organization: "Collaborative Robotics Lab",
-    position: "Machine Learning Researcher",
-    dates: "Jan 2025 - June 2025",
-    description: [
-      "Managed the development of Llama-3 powered AI speech-to-text and text-to-speech, enabling human-robot communication, improving interaction latency by 25%.",
-      "Implemented an intuitive GUI enhancing robot responses and blocking hallucinations, while maintaining sub-300ms response times between participants and robots",
-      "Led the modularization of ROS2 nodes for LLM-based communication, lowering integration time by approximately 40%"
-    ],
-    skills: ["LLaMA-3", "NLP", "ROS2", "Embedded Systems"]
-  },
-];
-
-// --- Helper function to truncate text ---
-const truncateText = (text: string, wordLimit: number) => {
-  const words = text.split(' ');
-  if (words.length <= wordLimit) {
-    return text;
-  }
-  return words.slice(0, wordLimit).join(' ') + '...';
-};
+import { ChevronDown } from 'lucide-react';
+import { experience } from '../data/resumeData';
+import SectionHeading from './SectionHeading';
 
 // --- The Main Experience Timeline Component ---
 const ExperienceTimeline = () => {
-  const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
-  const handleToggle = (id: number) => {
-    setExpandedId(expandedId === id ? null : id);
+  const handleToggle = (index: number) => {
+    setExpandedIndex(expandedIndex === index ? null : index);
   };
-
-  const cardClasses = "transition-all duration-300 ease-in-out hover:scale-[1.03] ";
 
   return (
     <section className="my-16">
-      <h2 className="text-4xl font-semibold mb-12 text-accent text-center">
-        Experience
-      </h2>
-      <div className="relative container mx-auto px-6 flex flex-col space-y-8">
-        {/* The central timeline line */}
-        <div 
-          className="absolute z-0 w-2 h-full bg-gradient-to-b from-amber-400 to-blue-500 shadow-md inset-0 left-1/2 -translate-x-1/2"
+      <SectionHeading title="Experience" />
+      <div className="relative flex flex-col space-y-8">
+        {/* The timeline line: along the left edge on phones, centered from md up */}
+        <div
+          className="absolute z-0 top-0 bottom-0 left-2.5 md:left-1/2 w-1 md:w-2 -translate-x-1/2 rounded-full bg-gradient-to-b from-amber-400 to-violet-500 shadow-md"
         ></div>
-        
+
         {/* Mapping over experiences */}
-        {experiences.map((exp, index) => {
-          const isExpanded = expandedId === exp.id;
+        {experience.map((exp, index) => {
+          const isExpanded = expandedIndex === index;
           const isRightSide = index % 2 !== 0;
 
           return (
-            <div key={exp.id} className={`relative z-10 flex w-full ${isRightSide ? 'justify-end md:pl-8' : 'justify-start md:pr-8'}`}>
+            <div
+              key={exp.company}
+              className={`relative z-10 pl-10 md:w-1/2 ${isRightSide ? 'md:ml-auto md:pl-8' : 'md:pl-0 md:pr-8'}`}
+            >
               {/* Timeline Dot */}
-              <div className={`absolute w-5 h-5 rounded-full mt-4 z-20 left-1/2 -translate-x-1/2 bg-amber-400 border-4 border-gray-800`}></div>
+              <div
+                className={`absolute top-7 z-20 w-5 h-5 -translate-x-1/2 rounded-full left-2.5 bg-amber-400 border-4 border-gray-800 ${
+                  isRightSide ? 'md:left-0' : 'md:left-full'
+                }`}
+              ></div>
 
               {/* Experience Card */}
-              <div 
-                className={`glass p-6 rounded-lg shadow-lg w-full md:w-[48%] cursor-pointer transition-all duration-500 ease-in-out overflow-hidden ${
-                  isRightSide ? 'self-end md:ml-[45%]' : 'self-start'
-                } ${
-                  isExpanded ? 'max-h-[900px]' : 'max-h-[260px] md:max-h-[240px]'
-                } ${cardClasses}`}
-                onClick={() => handleToggle(exp.id)}
+              <div
+                role="button"
+                tabIndex={0}
+                aria-expanded={isExpanded}
+                onClick={() => handleToggle(index)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleToggle(index);
+                  }
+                }}
+                className="glass shadow-lg cursor-pointer transition-transform duration-300 ease-in-out hover:scale-[1.03] focus-visible:outline-2 focus-visible:outline-accent"
               >
                 {/* --- HEADER --- */}
-                <div className="grid grid-cols-3 gap-x-4 items-start mb-2">
-                  <div className="col-span-2">
-                    {/* Updated Title Format */}
-                    <h3 className="text-md font-bold text-white ">{exp.organization}, </h3>
-                    <p className="text-lg text-violet-300 font-semibold ">{exp.position}</p>
+                <h3 className="text-xl font-bold text-white">{exp.company}</h3>
+                <p className="text-violet-300 font-semibold">{exp.position}</p>
+                <p className="mt-1 text-sm text-gray-400">
+                  {exp.dates} · {exp.location}
+                </p>
+
+                {/* --- SKILLS --- */}
+                {exp.skills && (
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {exp.skills.map((skill) => (
+                      <span key={skill} className="bg-gray-700/50 text-xs text-amber-300 font-semibold px-2 py-1 rounded-full">
+                        {skill}
+                      </span>
+                    ))}
                   </div>
-                  <p className="text-sm text-gray-400 text-right ">{exp.dates}</p>
+                )}
+
+                {/* --- SUMMARY --- */}
+                <p className="mt-4 text-sm text-gray-300">{exp.summary ?? exp.bullets[0]}</p>
+
+                {/* --- COLLAPSIBLE DETAILS --- */}
+                <div
+                  className={`grid transition-[grid-template-rows] duration-500 ease-in-out ${
+                    isExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <ul className="list-disc list-outside ml-5 pt-4 space-y-2 text-sm text-gray-300">
+                      {exp.bullets.map((bullet) => (
+                        <li key={bullet}>{bullet}</li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
 
-                {/* --- VISIBLE SKILLS --- */}
-                <div className="mt-2 mb-4">
-                    <div className="flex flex-wrap gap-2">
-                      {exp.skills.map((skill, i) => (
-                        <span key={i} className="bg-gray-700/50 text-xs text-amber-300 font-semibold px-2 py-1 rounded-full">
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                </div>
-                
-                {/* --- COLLAPSIBLE DESCRIPTION --- */}
-                <div className="text-gray-300">
-                    {isExpanded ? (
-                      <ul className="list-disc list-inside space-y-2 text-sm">
-                        {exp.description.map((point, i) => <li key={i}>{point}</li>)}
-                      </ul>
-                    ) : (
-                      // Show truncated text when collapsed
-                      <p className="text-sm">{truncateText(exp.description[0], 6)}</p>
-                    )}
+                <div className="mt-4 flex items-center gap-1 text-sm font-semibold text-accent">
+                  {isExpanded ? 'Hide details' : 'Show details'}
+                  <ChevronDown
+                    className={`h-4 w-4 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}
+                  />
                 </div>
               </div>
             </div>

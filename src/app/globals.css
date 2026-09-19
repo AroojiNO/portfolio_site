@@ -42,3 +42,58 @@ body {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
+/* 6. Film grain overlay tiled over the whole site (see layout.tsx).
+   The color matrix turns the noise gray, stretches its contrast and makes it opaque so it reads as static.
+   Raise or lower the opacity to make the grain stronger or subtler. */
+.grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='2.5 0 0 0 -0.75 2.5 0 0 0 -0.75 2.5 0 0 0 -0.75 0 0 0 0 1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.06;
+}
+
+/* 7. Background glows on the main page (see page.tsx).
+   Each glow drifts slowly side to side and pulses in vibrancy. Set --drift-duration, --pulse-duration
+   and the matching delays per glow so they never move in sync.
+   A low peak and a long, gradual falloff keep the glows diffuse so they read as far away;
+   --glow-strength sets each color's peak. */
+.glow {
+  position: absolute;
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle,
+    rgba(var(--glow-rgb), var(--glow-strength)) 0%,
+    rgba(var(--glow-rgb), calc(var(--glow-strength) * 0.6)) 25%,
+    rgba(var(--glow-rgb), calc(var(--glow-strength) * 0.25)) 50%,
+    transparent 72%
+  );
+  animation:
+    glow-drift var(--drift-duration, 60s) ease-in-out var(--drift-delay, 0s) infinite alternate,
+    glow-pulse var(--pulse-duration, 10s) ease-in-out var(--pulse-delay, 0s) infinite alternate;
+  will-change: transform, opacity;
+}
+
+/* Kept very dim on purpose. Warm colors look closer, so amber stays dimmer than indigo,
+   which blends into the blue-tinted background and reads as distant depth. */
+.glow-amber {
+  --glow-rgb: 251, 191, 36;
+  --glow-strength: 0.04;
+}
+
+.glow-indigo {
+  --glow-rgb: 79, 70, 229;
+  --glow-strength: 0.07;
+}
+
+@keyframes glow-drift {
+  from { transform: translateX(-10vw); }
+  to { transform: translateX(10vw); }
+}
+
+@keyframes glow-pulse {
+  from { opacity: 0.45; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glow { animation: none; }
+}
+

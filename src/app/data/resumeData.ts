@@ -6,6 +6,7 @@ export interface ContactInfo {
   location: string;
   email: string;
   linkedin: string;
+  github: string;
   website: string;
   phone?: string;
 }
@@ -32,6 +33,8 @@ export interface ExperienceItem {
   location: string;
   dates: string;
   bullets: string[];
+  summary?: string; // One-line summary shown on collapsed main page timeline cards
+  skills?: string[]; // Tags shown on main page timeline cards
 }
 
 export interface ProjectItem {
@@ -53,6 +56,7 @@ export const contactInfo: ContactInfo = {
   location: "Charlottesville, Virginia",
   email: "noaharooji@gmail.com",
   linkedin: "linkedin.com/in/noah-arooji",
+  github: "github.com/AroojiNO",
   website: "www.noaharooji.com",
 };
 
@@ -118,6 +122,8 @@ export const experience: ExperienceItem[] = [
       "Architected a distributed pricing application in Java hosted on AWS Fargate, leveraging an event-driven pipeline to process 7,000 billing records per minute with 99.94% file success rate",
       "Engineered data ingestion to handle 5M writes per hour to InfluxDB, optimizing batch writes and time-series indexing to serve sub-second time-range queries to React.js (TypeScript) dashboards",
     ],
+    summary: "Built a price intelligence system and an event-driven pricing pipeline for internal metering teams.",
+    skills: ["Java", "AWS Fargate", "InfluxDB", "TypeScript"],
   },
   {
     company: "Mythics, LLC",
@@ -129,6 +135,8 @@ export const experience: ExperienceItem[] = [
       "Built interactive data visualization components in React.js with modular state management, rendering client metrics across filterable lead scoring views, reducing lead evaluation time by 40% across 3 internal teams",
       "Architected data ingestion and enrichment with REST API endpoints leveraging Express.js and Oracle ADW to fetch 50,000+ records in sub 600ms latency",
     ],
+    summary: "Led a team of 5–10 building a full-stack client prospecting tool with React.js, Express.js and Oracle ADW.",
+    skills: ["React", "Express.js", "Oracle ADW Warehouse"],
   },
   {
     company: "UVA School of Data Science",
@@ -140,6 +148,8 @@ export const experience: ExperienceItem[] = [
       "Built scalable preprocessing pipelines in Pandas and NumPy, transforming raw economic time-series records into structured contrastive learning pairs, reducing data preparation time by 95%",
       "Optimized model training through systematic data quality filtering and time-series alignment, removing 30+ insufficient data pairs and improving validation recall convergence by 45% across encoder configuration experiments",
     ],
+    summary: "Training a CLIP-based model that matches economic time-series charts with natural-language descriptions.",
+    skills: ["PyTorch", "CLIP", "Pandas", "NumPy"],
   },
 ];
 

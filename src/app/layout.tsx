@@ -29,6 +29,8 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} bg-dark text-white antialiased`}>
         <Navbar />
         {children}
+        {/* Subtle static over every page so flat dark areas don't look empty */}
+        <div aria-hidden="true" className="grain pointer-events-none fixed inset-0 z-30 print:hidden" />
         <Analytics />
       </body>
     </html>
