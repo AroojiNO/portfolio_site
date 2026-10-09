@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
-import { Renderer, Program, Mesh, Triangle, Vec2 } from "ogl";
+import { Renderer, Program, Mesh, Triangle, Vec2, RenderTarget, Texture } from "ogl";
+import type { OGLRenderingContext } from "ogl";
 
 // Noise functions GLSL (can be kept separate or injected)
 const noiseFunctionsGLSL = `
@@ -37,6 +38,100 @@ float fbm(vec2 st) {
 }
 `;
 
+// Cursor push simulation. Each texel stores how far the lines at that spot are pushed (xy)
+// and how fast that push is changing (zw), both in units of the hero's short side.
+// Every step springs the push toward a soft clearing around the cursor: the lines ease out of
+// the way while it lingers, then drift back once it has gone, overshooting a little as they settle.
+const simVertexShader = `
+attribute vec2 position;
+attribute vec2 uv;
+varying vec2 vUv;
+void main() {
+  vUv = uv;
+  gl_Position = vec4(position, 0.0, 1.0);
+}`;
+
+const simFragmentShader = `
+precision highp float;
+uniform sampler2D uState;
+uniform vec2 uTexel;     // one sim texel, in texture coordinates
+uniform vec2 uAspect;    // hero size divided by its short side
+uniform vec2 uMouse;     // cursor, in short-side units from the hero's bottom-left
+uniform float uStrength; // 1 while the cursor is on the page, 0 once it leaves
+uniform float uDt;
+varying vec2 vUv;
+
+void main() {
+  vec4 state = texture2D(uState, vUv);
+  vec2 offset = state.xy;
+  vec2 velocity = state.zw;
+
+  // Where the cursor wants the lines: pushed out of a soft circle around it, strongest at the
+  // cursor and fading with distance. Space squeezes in toward the cursor, so lines thin out
+  // and fade there. pushStrength near 1.0 clears the very centre, lower leaves faint lines.
+  float pushStrength = 0.95;
+  float pushRadius = 0.18;
+  vec2 fromMouse = vUv * uAspect - uMouse;
+  vec2 target = fromMouse * pushStrength * uStrength * exp(-dot(fromMouse, fromMouse) / (pushRadius * pushRadius));
+
+  // Let each spot feel its neighbours, so a push ripples gently into the surrounding lines
+  vec2 cell = uTexel * uAspect;
+  vec2 left = texture2D(uState, vUv - vec2(uTexel.x, 0.0)).xy;
+  vec2 right = texture2D(uState, vUv + vec2(uTexel.x, 0.0)).xy;
+  vec2 down = texture2D(uState, vUv - vec2(0.0, uTexel.y)).xy;
+  vec2 up = texture2D(uState, vUv + vec2(0.0, uTexel.y)).xy;
+  vec2 spread = (left + right - 2.0 * offset) / (cell.x * cell.x) + (down + up - 2.0 * offset) / (cell.y * cell.y);
+
+  // Damped spring toward the target, tuned separately for lines moving away and lines returning.
+  // Lower stiffness = slower, lower damping = more wobble.
+  float pushStiffness = 6.0;
+  float pushDamping = 4.4;
+  float returnStiffness = 3.0;
+  float returnDamping = 2.1;
+  float pushing = clamp((length(target) - length(offset)) / 0.01, 0.0, 1.0);
+  float stiffness = mix(returnStiffness, pushStiffness, pushing);
+  float damping = mix(returnDamping, pushDamping, pushing);
+  float spreadAmount = 0.02;
+  vec2 accel = (target - offset) * stiffness + spread * spreadAmount - velocity * damping;
+  velocity += accel * uDt;
+  offset += velocity * uDt;
+
+  gl_FragColor = vec4(offset, velocity);
+}`;
+
+const SIM_SIZE = 128;      // the push varies smoothly, so a small texture is plenty
+const SIM_STEP = 1 / 60;   // fixed step, so the spring feels the same at any frame rate
+const SIM_MAX_STEPS = 4;   // per frame, so a slow frame can't snowball
+const SIM_SETTLE_TIME = 6; // seconds after the cursor last changed before the sim can sleep
+
+// Two half-float targets to ping-pong between, or null if this device can't render to them
+// (the hero then just draws without the cursor push)
+function createSimTargets(gl: OGLRenderingContext): [RenderTarget, RenderTarget] | null {
+  const renderer = gl.renderer;
+  let type: number;
+  let internalFormat: number;
+  if (renderer.isWebgl2) {
+    const gl2 = gl as WebGL2RenderingContext;
+    gl2.getExtension("EXT_color_buffer_half_float");
+    type = gl2.HALF_FLOAT;
+    internalFormat = gl2.RGBA16F;
+  } else {
+    const halfFloat = renderer.extensions["OES_texture_half_float"];
+    if (!halfFloat) return null;
+    type = halfFloat.HALF_FLOAT_OES;
+    internalFormat = gl.RGBA;
+  }
+  const filter = renderer.isWebgl2 || renderer.extensions["OES_texture_half_float_linear"] ? gl.LINEAR : gl.NEAREST;
+  const options = { width: SIM_SIZE, height: SIM_SIZE, type, format: gl.RGBA, internalFormat, minFilter: filter, depth: false };
+  const targets: [RenderTarget, RenderTarget] = [new RenderTarget(gl, options), new RenderTarget(gl, options)];
+  const complete = targets.every((target) => {
+    renderer.bindFramebuffer(target);
+    return gl.checkFramebufferStatus(gl.FRAMEBUFFER) === gl.FRAMEBUFFER_COMPLETE;
+  });
+  renderer.bindFramebuffer();
+  return complete ? targets : null;
+}
+
 // Vertex shader: full-screen triangle (remains simple)
 const vertexShader = `
 attribute vec2 position;
@@ -44,13 +139,15 @@ void main() {
   gl_Position = vec4(position, 0.0, 1.0);
 }`;
 
-// Fragment shader: For organic blob, sharp contour lines, and 2.5D mouse parallax
+// Fragment shader: For organic blob and sharp contour lines, pushed around by the cursor simulation
 const fragmentShader = `
 precision highp float;
 uniform float iTime;
 uniform vec2 iResolution;
-uniform vec2 uMouse;
 uniform float uSpacing;
+uniform sampler2D uOffset; // cursor push from the simulation, in short-side units
+uniform vec2 uBufferSize;  // canvas size in device pixels
+uniform vec2 uSimTexel;    // one sim texel, in texture coordinates
 
 ${noiseFunctionsGLSL}
 
@@ -59,16 +156,24 @@ void main() {
   // Map fragment coordinates to a -1 to 1 range for the shortest dimension,
   // and apply aspect ratio correction. This makes the base circle truly circular.
   vec2 aspect = vec2(iResolution.x / min(iResolution.x, iResolution.y), iResolution.y / min(iResolution.x, iResolution.y));
-  vec2 uv = (gl_FragCoord.xy / iResolution.xy - 0.5) * aspect;
 
-  // --- Mouse Parallax Effect ---
-  // Apply a subtle shift to the UV coordinates based on mouse position.
-  // This creates a "window" or "tilting" effect.
-  // Adjust parallaxFactor to control the strength of the effect.
-  float parallaxFactor = 0.05; // How much the shape "tilts" with the mouse
-  vec2 parallaxOffset = (uMouse - 0.5) * parallaxFactor;
-  uv -= parallaxOffset;
+  // --- Cursor Push ---
+  // Draw each pixel with the pattern from a little closer to the cursor,
+  // which pushes the lines outward wherever the simulation says they've been pushed.
+  vec2 screen = gl_FragCoord.xy / uBufferSize;
+  float shortSide = min(uBufferSize.x, uBufferSize.y);
+  vec2 offset = texture2D(uOffset, screen).xy;
+  vec2 fragCoord = gl_FragCoord.xy - offset * shortSide;
+  vec2 uv = (fragCoord / iResolution.xy - 0.5) * aspect;
 
+  // How much the push squashes space here: 1 where untouched, dropping toward 0 near the cursor
+  // (and below 0 if a trail folds over itself). Lines fade gradually as it drops, so they thin
+  // out toward the cursor rather than bunching up underneath it.
+  vec2 cell = uSimTexel * uBufferSize / shortSide; // one sim texel, in short-side units
+  vec2 offsetChangeX = (texture2D(uOffset, screen + vec2(uSimTexel.x, 0.0)).xy - texture2D(uOffset, screen - vec2(uSimTexel.x, 0.0)).xy) / (2.0 * cell.x);
+  vec2 offsetChangeY = (texture2D(uOffset, screen + vec2(0.0, uSimTexel.y)).xy - texture2D(uOffset, screen - vec2(0.0, uSimTexel.y)).xy) / (2.0 * cell.y);
+  float squash = (1.0 - offsetChangeX.x) * (1.0 - offsetChangeY.y) - offsetChangeY.x * offsetChangeX.y;
+  float clearedFade = smoothstep(0.0, 0.9, squash);
 
   // --- Blob Shape Calculation ---
   float angle = atan(uv.y, uv.x);
@@ -91,7 +196,7 @@ void main() {
 
   float distortedRadius = baseRadius + lobeDistortion + noiseDistortion;
 
-  // Calculate distance from the (possibly parallax-shifted) center
+  // Calculate distance from the center
   float dist = length(uv);
 
   // --- Contour Lines ---
@@ -120,7 +225,7 @@ void main() {
 
   float centerFadeFactor = smoothstep(centralFadeEndRadius, centralFadeStartRadius, dist);
 
-  float finalContourLineStrength = contourLine * centerFadeFactor;
+  float finalContourLineStrength = contourLine * centerFadeFactor * clearedFade;
 
   // --- Coloring & Glow ---
   // Three color sets for lines
@@ -186,8 +291,6 @@ const TopographyHero: React.FC<TopographyHeroProps> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const animationFrameId = useRef<number>(null);
-  const mousePosition = useRef(new Vec2(0.5, 0.5));
-  const targetMousePosition = useRef(new Vec2(0.5, 0.5));
 
   useEffect(() => {
     const container = containerRef.current;
@@ -196,19 +299,41 @@ const TopographyHero: React.FC<TopographyHeroProps> = ({
     const renderer = new Renderer({ alpha: true, antialias: true, dpr: Math.min(window.devicePixelRatio, 1.5) });
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 0);
-    gl.enable(gl.BLEND);
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA); // Standard alpha blending
     container.appendChild(gl.canvas);
 
     const geometry = new Triangle(gl); // Full-screen triangle
+
+    // The cursor push only runs for a mouse, and not for visitors who prefer reduced motion
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const simTargets = enableMouseInteraction && !reduceMotion ? createSimTargets(gl) : null;
+    const simProgram = new Program(gl, {
+      vertex: simVertexShader,
+      fragment: simFragmentShader,
+      uniforms: {
+        uState: { value: simTargets?.[0].texture },
+        uTexel: { value: new Vec2(1 / SIM_SIZE, 1 / SIM_SIZE) },
+        uAspect: { value: new Vec2(1, 1) },
+        uMouse: { value: new Vec2(0, 0) },
+        uStrength: { value: 0 },
+        uDt: { value: SIM_STEP },
+      },
+      depthTest: false,
+      depthWrite: false,
+      cullFace: null,
+    });
+    const simMesh = new Mesh(gl, { geometry, program: simProgram });
+
     const program = new Program(gl, {
       vertex: vertexShader,
       fragment: fragmentShader,
       uniforms: {
         iTime: { value: 0 },
         iResolution: { value: new Vec2(container.clientWidth, container.clientHeight) },
-        uMouse: { value: mousePosition.current },
-        uSpacing: { value: spacing }
+        uSpacing: { value: spacing },
+        // Without the sim, a blank texture reads as no push at all
+        uOffset: { value: simTargets ? simTargets[0].texture : new Texture(gl) },
+        uBufferSize: { value: new Vec2(1, 1) },
+        uSimTexel: { value: new Vec2(1 / SIM_SIZE, 1 / SIM_SIZE) },
       },
       transparent: true, // Important for blending with page background
     });
@@ -219,25 +344,51 @@ const TopographyHero: React.FC<TopographyHeroProps> = ({
       const height = container.clientHeight;
       renderer.setSize(width, height);
       program.uniforms.iResolution.value.set(width, height);
+      program.uniforms.uBufferSize.value.set(gl.canvas.width, gl.canvas.height);
+      lastActivity = performance.now();
     };
-    window.addEventListener("resize", resize);
-    resize(); // Initial call
 
+    // Latest cursor position in the viewport, and whether it's on the page at all
+    const pointer = { x: 0, y: 0, onPage: false };
+    let lastActivity = -Infinity;
+    let readIndex = 0;
+
+    const stepSim = () => {
+      if (!simTargets) return;
+      const read = simTargets[readIndex];
+      const write = simTargets[1 - readIndex];
+      simProgram.uniforms.uState.value = read.texture;
+      renderer.render({ scene: simMesh, target: write });
+      readIndex = 1 - readIndex;
+      program.uniforms.uOffset.value = write.texture;
+    };
+
+    let lastFrame = performance.now();
+    let simTime = 0;
     const startTime = performance.now();
-    const updateLoop = (t: number) => { // Renamed to avoid conflict with 'update' name if defined elsewhere
-      program.uniforms.iTime.value = (performance.now() - startTime) * 0.001;
+    const updateLoop = () => {
+      const now = performance.now();
+      const frameDt = Math.min((now - lastFrame) * 0.001, 0.1);
+      lastFrame = now;
+      program.uniforms.iTime.value = (now - startTime) * 0.001;
 
-      if (enableMouseInteraction) {
-        // Smooth mouse movement (lerp)
-        mousePosition.current.lerp(targetMousePosition.current, 0.07); // Adjust smoothing factor
-        program.uniforms.uMouse.value.copy(mousePosition.current);
-      } else {
-        // Ensure mouse is centered if interaction is disabled or not active
-        if(mousePosition.current.x !== 0.5 || mousePosition.current.y !== 0.5){
-            targetMousePosition.current.set(0.5,0.5); // Gently move back to center
-            mousePosition.current.lerp(targetMousePosition.current, 0.02);
-            program.uniforms.uMouse.value.copy(mousePosition.current);
+      // Step the push simulation at a fixed rate, and let it sleep once the cursor
+      // has stopped changing anything, since the lines have settled by then
+      if (simTargets && (now - lastActivity) * 0.001 < SIM_SETTLE_TIME) {
+        const rect = container.getBoundingClientRect();
+        const shortSide = Math.min(rect.width, rect.height);
+        simProgram.uniforms.uAspect.value.set(rect.width / shortSide, rect.height / shortSide);
+        simProgram.uniforms.uMouse.value.set((pointer.x - rect.left) / shortSide, (rect.bottom - pointer.y) / shortSide);
+        simProgram.uniforms.uStrength.value = pointer.onPage ? 1 : 0;
+
+        simTime += frameDt;
+        let steps = 0;
+        while (simTime >= SIM_STEP && steps < SIM_MAX_STEPS) {
+          stepSim();
+          simTime -= SIM_STEP;
+          steps++;
         }
+        if (steps === SIM_MAX_STEPS) simTime = 0;
       }
 
       renderer.render({ scene: mesh });
@@ -247,6 +398,7 @@ const TopographyHero: React.FC<TopographyHeroProps> = ({
     // Only draw while the hero is on screen, so the shader doesn't keep the GPU busy after scrolling past it
     const startLoop = () => {
       if (animationFrameId.current === null) {
+        lastFrame = performance.now();
         animationFrameId.current = requestAnimationFrame(updateLoop);
       }
     };
@@ -262,38 +414,40 @@ const TopographyHero: React.FC<TopographyHeroProps> = ({
     });
     visibilityObserver.observe(container);
 
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!enableMouseInteraction || !container) return;
-      const rect = container.getBoundingClientRect();
-      targetMousePosition.current.set(
-        e.clientX / rect.width, // No subtraction of rect.left if canvas is full window
-        1.0 - (e.clientY / rect.height) // Y is inverted; no subtraction of rect.top
-      );
+    // Touch is skipped: a tap would leave the lines pushed around a spot nobody is pointing at
+    const handlePointerMove = (e: PointerEvent) => {
+      if (e.pointerType === "touch") return;
+      pointer.x = e.clientX;
+      pointer.y = e.clientY;
+      pointer.onPage = true;
+      lastActivity = performance.now();
+    };
+    // relatedTarget is null only when the cursor leaves the window itself
+    const handleMouseOut = (e: MouseEvent) => {
+      if (e.relatedTarget) return;
+      pointer.onPage = false;
+      lastActivity = performance.now();
+    };
+    // Scrolling moves the hero under a still cursor
+    const handleScroll = () => {
+      lastActivity = performance.now();
     };
 
-    const handleMouseLeave = () => {
-      if (!enableMouseInteraction) return;
-      targetMousePosition.current.set(0.5, 0.5); // Reset to center
-    };
-
-    // Use window for mouse move if the canvas container is full screen
-    // Otherwise, use 'container'
-    const eventTarget = window; // Assuming full screen hero
-    if (enableMouseInteraction) {
-      eventTarget.addEventListener("mousemove", handleMouseMove as EventListener);
-      // Only add mouseleave if container is not full window, otherwise mouse rarely leaves window
-      // For full window, it's better to let it drift back to center if interaction stops.
-      // container.addEventListener("mouseleave", handleMouseLeave);
+    window.addEventListener("resize", resize);
+    resize(); // Initial call
+    if (simTargets) {
+      window.addEventListener("pointermove", handlePointerMove);
+      window.addEventListener("mouseout", handleMouseOut);
+      window.addEventListener("scroll", handleScroll, { passive: true });
     }
 
     return () => {
       visibilityObserver.disconnect();
       stopLoop();
       window.removeEventListener("resize", resize);
-      if (enableMouseInteraction) {
-        eventTarget.removeEventListener("mousemove", handleMouseMove as EventListener);
-        // container.removeEventListener("mouseleave", handleMouseLeave);
-      }
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("mouseout", handleMouseOut);
+      window.removeEventListener("scroll", handleScroll);
       if (gl.canvas && container.contains(gl.canvas)) {
         container.removeChild(gl.canvas);
       }
