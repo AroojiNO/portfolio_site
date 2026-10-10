@@ -84,8 +84,8 @@ void main() {
 
   // Damped spring toward the target, tuned separately for lines moving away and lines returning.
   // Lower stiffness = slower, lower damping = more wobble.
-  float pushStiffness = 6.0;
-  float pushDamping = 4.4;
+  float pushStiffness = 25.0;
+  float pushDamping = 8.0;
   float returnStiffness = 3.0;
   float returnDamping = 2.1;
   float pushing = clamp((length(target) - length(offset)) / 0.01, 0.0, 1.0);
